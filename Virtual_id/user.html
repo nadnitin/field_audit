@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=100">
+    <title>Document</title>
+    <script src="./js/index.js"></script>
+    <script src="./js/login.js"></script>
+    <Body background="image.jpg"></Body>
+
+
+    <script> var nitin=localStorage.getItem("name");
+
+        if (nitin=="secrate") {
+          
+          }
+          else {
+            window.location.href="index.html";
+           
+            
+          }
+        </script>
+
+
+<style>
+    tr {
+        background-color: rgb(255, 255, 255);
+        border: 1px solid black;
+        border-color: #96D4D4;
+        
+        
+    }
+    
+    tr:nth-child(2n) {
+        background-color: rgb(252, 255, 255);
+        border: 1px solid black;
+        border-color: #96D4D4;
+        
+    }
+
+    .button2 {
+  
+  border: 0;
+  line-height: 4.1;
+  padding: 0 20px;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
+  border-radius: 15px;
+  background-color: rgb(244, 226, 30);
+  background-image: linear-gradient(to top left,rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%,rgba(0, 0, 0, 0));
+  box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6);
+  width:20%;
+  
+}
+
+.styled:hover {
+  background-color: rgba(255, 0, 0, 1);
+ 
+}
+
+.lable {
+  
+  color: rgb(255, 255, 255);
+  font-size: 200%;
+  
+  text-align: center;
+  /*background-image:url("image.jpg")*/
+ 
+}   
+
+</style>
+</head>
+
+
+<script>
+    fetch('https://script.google.com/macros/s/AKfycbx9nnLiNzdPCn_CZIlJaFisuM7bs_hj5TyeDk5QgfByEgPTRg4zowpQYS7QL_8T1Lhj/exec')
+        .then(res => res.json())
+        .then(data => {
+            //console.log(data.content[2]);
+           const userdata = data.content;
+           for(i=1; i<=userdata.length; i++){
+            console.log(userdata[i]);
+
+           }  
+            // let tr = data.content.reduce((prev, cur) => {
+              //  let td = cur.map(e => `<td>${e}</td>`)
+               // return prev + `<tr>${td.join("")}</tr>`
+          //  }, "\r")
+            //document.querySelector("table").innerHTML = tr;
+            
+        });
+
+
+</script>
+
+
+</body>
+</head>

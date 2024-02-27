@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="login.css" media="screen">
+    <script class="u-script" type="text/javascript" src="login.js" defer=""></script>
+    <title>ATOS Login</title>
+</head>
+<body>
+    <div class="container">                
+        <h2>Atos Login</h2>
+        <form method="post" id="form_id" name="myform">
+            <div>
+			<label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter username" >
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" >
+        
+            <button type="submit" class="logout-btn" id="submit">Login</button></div>
+            
+			<div id="loader" class="loader"></div>
+        </form>
+    </div>
+</body>
+</html>

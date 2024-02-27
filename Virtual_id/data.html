@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Virtual Data </title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="table.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  
+  </head>
+  <script> var nitin = localStorage.getItem("name");
+
+    if (nitin == "secrate") {
+    }
+    else {
+      window.location.href = "../index.html";
+    }
+  </script>
+
+  <body>
+    <header>Virtual ID</header>
+    <br /><br /><br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <input
+      type="number"
+      class="search-box"
+      id="searchInput"
+      onkeyup="filterTable()"
+      placeholder="Search for Site Code..."
+    />
+    
+    <button class="btn" onclick="downloadTable()">Download</button>
+    <button class="btn2" onclick="window.location.href='../home.html'">HOME</button>
+    <div class="loader-container" id="loader">
+      <div class="loader"></div>
+    </div>
+    <br /><br />
+    <table class="table" id="mytable"></table>
+    <script class="u-script" type="text/javascript" src="table.js" defer=""></script>
+  </body>
+</html>
