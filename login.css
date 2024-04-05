@@ -1,111 +1,52 @@
-/* Loader Styles */
-.loader {
-    display: none;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #96b0dd;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto; /* Center the loader horizontally */
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Reset default styles */
-  * {
-    box-sizing: border-box;
-  }
-  
-  *:focus {
-    outline: none;
-  }
-  
-  body {
-    font-family: Arial;
-    background-color: #3498DB;
-    padding: 50px;
-    display: flex;
-    justify-content: center; /* Center the body horizontally */
-    align-items: center; /* Center the body vertically */
-    height: 100vh; /* Set the body height to full viewport height */
-  }
-  
-  .login {
-    width: 300px;
-  }
-  
-  .login-screen {
-    background-color: #FFF;
+/* Custom Login CSS */
+body {
+  background-color: #f8f9fa;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+  padding: 30px;
+}
+
+.form-control {
+  border-radius: 20px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 20px;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.card-footer {
+    background-color: #9e1313;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
     padding: 20px;
-    border-radius: 5px;
-  }
-  
-  .app-title {
     text-align: center;
-    color: #777;
-  }
-  
-  .login-form {
-    text-align: center;
-  }
-  
-  .control-group {
-    margin-bottom: 10px;
-  }
-  
-  input {
-    text-align: center;
-    background-color: #ECF0F1;
-    border: 2px solid transparent;
-    border-radius: 3px;
-    font-size: 16px;
-    font-weight: 200;
-    padding: 10px 0;
-    width: 100%;
-    transition: border .5s;
-  }
-  
-  input:focus {
-    border: 2px solid #3498DB;
-    box-shadow: none;
-  }
-  
-  .btn {
-    border: 2px solid transparent;
-    background: #3498DB;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 25px;
-    padding: 10px 0;
-    text-decoration: none;
-    text-shadow: none;
-    border-radius: 3px;
-    box-shadow: none;
-    transition: 0.25s;
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  .btn:hover {
-    background-color: #2980B9;
-  }
-  
-  .login-link {
-    font-size: 12px;
-    color: #444;
-    display: block;
-    margin-top: 12px;
-  }
-  
-  /* Add media query for mobile view */
-  @media screen and (max-width: 768px) {
-    .login {
-      width: 80%;
-    }
+    
+    text-transform: uppercase; /* Convert text to uppercase */
+    font-size: 15px;
+    font-weight: bold;
+    color: #f8f9fa;
   }
   
