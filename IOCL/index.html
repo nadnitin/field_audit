@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="Wed, 11 Jan 1984 05:00:00 GMT">
+  <script type="text/javascript" src="IOCL.js" defer=""></script>
+  <link rel="stylesheet" href="IOCL.css" media="screen">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+
+
+
+</head>
+
+<body onload="loaddata()">
+
+  <header>
+    <a id="home" class="header_button" href="../index.html"> Home </a>
+    IOCL Field Audit
+  
+
+  </header>
+  <h2>📘Field Audit REPORTS MANDATORY SNAPS📚<br>
+
+    NOTE-All photo with timestamp & location<br>
+    <br>
+    
+    1-Full FCC (Cabinate/IT Rack) &nbsp;  2:-Tank status &nbsp;  3 :-DU status <br>
+    <br>
+    4 :-Tank scotch Cast &nbsp; 5:-Earth shield &nbsp; 6:-UPS with Battery &nbsp; <br> 
+    <br>
+    7:-FCC (Motherboard,RS485,Expanstion) &nbsp; 8:-SPD &nbsp; 9:-TLS IB /Renu Console/SBEM-START Zener Barrier</h2>
+    
+    
+    
+  <div id="myLoader"></div>
+
+  <div class="container" id="myDiv">
+    <form id="dataForm" onsubmit="return saveData(event)">
+      <div class="form-group">
+        <label for="site_code">Sap Code</label>
+        <input type="number" placeholder="Sap Code" onclick="Resetname()" onblur="getSitedetails(),empty()" required
+          id="site_code" name="site_code">
+      </div>
+
+      <div class="form-group">
+        <label for="site_name">Site Name</label>
+        <input type="text" placeholder="Site Name" readonly required id="site_name" name="site_name">
+      </div>
+
+      <div class="form-group">
+        <label for="state">State Office</label>
+        <input type="text" placeholder="State Office" readonly required id="state" name="state">
+      </div>
+
+      <div class="form-group">
+        <label for="do_office">DO</label>
+        <input type="text" placeholder="DO" required id="do_office" readonly name="do_office">
+      </div>
+
+      <div class="form-group">
+        <label for="total_tank">Total Tank</label>
+        <input type="number" placeholder="Total Tank" required id="total_tank" min="0" onkeyup="tankvs()"
+          name="total_tank">
+      </div>
+
+      <div class="form-group">
+        <label for="tank_online">Online tank</label>
+        <input type="number" placeholder="Online tank" required id="tank_online" min="0" onkeyup="tankvs()"
+          name="tank_online">
+      </div>
+
+      <div class="form-group">
+        <label for="tank_offline">Offline Tank</label>
+        <input type="number" placeholder="Offline Tank" id="tank_offline" min="0" onkeyup="tankvs()" readonly
+          name="tank_offline" required>
+      </div>
+
+      <div class="form-group">
+        <label for="remark_tank_offline">Tank Offline Remark</label>
+        <input type="text" placeholder="Tank Offline Remark" id="remark_tank_offline" name="remark_tank_offline"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="total_du">Total DU</label>
+        <input type="number" placeholder="Total DU" id="total_du" min="0" name="total_du" onkeyup="tankvs()" required
+          class="half-width required">
+      </div>
+
+      <div class="form-group">
+        <label for="du_online">Online DU</label>
+        <input type="number" placeholder="Online DU" id="du_online" min="0" name="du_online" onkeyup="tankvs()" required
+          class="half-width required">
+      </div>
+
+      <div class="form-group">
+        <label for="du_offline">Offline DU</label>
+        <input type="number" placeholder="Offline DU" readonly min="0" required id="du_offline" onkeyup="tankvs()"
+          name="du_offline" class="half-width required">
+      </div>
+
+      <div class="form-group">
+        <label for="remark_du_offline">DU Offline Remark</label>
+        <input type="text" placeholder="DU Offline Remark" required id="remark_du_offline" name="remark_du_offline"
+          class="half-width required">
+      </div>
+
+      <div class="form-group">
+        <label for="mbmake">Motherboard Make</label>
+        <select id="mbmake" name="mbmake" class="half-width required" required>
+          <option value="">Select</option>
+          <option value="ECS">ECS</option>
+          <option value="Maxtang">Maxtang</option>
+          <option value="Punache">punache</option>
+          <option value="New Maxtang">New Maxtang</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="mb_serial">Motherboard Serial</label>
+        <input type="text" placeholder="Motherboard Serial"  id="mb_serial" name="mb_serial"
+          class="half-width required" autocomplete="off" oninput="this.value = this.value.toUpperCase()" >
+      </div>
+
+
+      <div class="form-group">
+        <label for="ups_status">UPS Status</label>
+        <select id="ups_status" name="ups_status" class="half-width required" required>
+          <option value="">Select</option>
+          <option value="Online">Online</option>
+          <option value="Offline">Offline</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ups_remark">UPS Remark</label>
+        <input type="text" placeholder="UPS Remark" id="ups_remark" name="ups_remark" class="half-width required"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="ups_battery">UPS Battery Status</label>
+        <select id="ups_battery" name="ups_battery" class="half-width required" required>
+          <option value="">Select</option>
+          <option value="Working">Working</option>
+          <option value="Weak">Weak</option>
+          <option value="Dead">Dead</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ups_battery_remark">UPS Battery Remark</label>
+        <input type="text" placeholder="UPS Battery Remark" id="ups_battery_remark" name="ups_battery_remark"
+          class="half-width required" required>
+      </div>
+
+      <div class="form-group">
+        <label for="dg_status">DG Availability</label>
+        <select id="dg_status" name="dg_status" required>
+          <option value="">Select</option>
+          <option value="Standerd">Standerd</option>
+          <option value="NON-Standerd">NON-Standerd</option>
+          <option value="Solar">Solar</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="fcc_sheld">FCC Probe Shield Earth</label>
+        <select id="fcc_sheld" name="fcc_sheld" required>
+          <option value="">Select</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="zener_barrier">Zener Barrier Availability</label>
+        <select id="zener_barrier" name="zener_barrier" required>
+          <option value="">Select</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="earth_voltage">FCC Earth Voltage</label>
+        <input type="number" placeholder="FCC Earth Voltage" id="earth_voltage" required name="earth_voltage" step="1">
+      </div>
+
+      <div class="form-group">
+        <label for="internet_connectivity">Internet Connectivity</label>
+        <select id="internet_connectivity" name="internet_connectivity" required>
+          <option value="">Select</option>
+          <option value="SIM">SIM</option>
+          <option value="Broadband">Broadband</option>
+          <option value="SD-WAN">SD-WAN</option>
+          <option value="VSAT">VSAT</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="site_status">Site Status</label>
+        <select id="site_status" name="site_status" required>
+          <option value="">Select</option>
+          <option value="Online">Online</option>
+          <option value="Offline">Offline</option>
+          <option value="Site Closed">Site Closed</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="site_offline_remark">Site Offline Remark</label>
+        <input type="text" placeholder="Site Offline Remark" id="site_offline_remark" name="site_offline_remark"
+          required >
+      </div>
+
+      <div class="form-group">
+        <label for="rdb_vs_cms">RDB VS CMS Status</label>
+        <select id="rdb_vs_cms" name="rdb_vs_cms" required>
+          <option value="">Select</option>
+          <option value="MATCH">MATCH</option>
+          <option value="MISMATCH">MISMATCH</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="interlock_report">Interlock Report</label>
+        <select id="interlock_report" name="interlock_report" required>
+          <option value="">Select</option>
+          <option value="Enable">Enable</option>
+          <option value="Disable">Disable</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="foir_report_last_five_days">FOIR Report Last 5 Days</label>
+        <select id="foir_report_last_five_days" name="foir_report_last_five_days" required>
+          <option value="">Select</option>
+          <option value="MATCH">MATCH</option>
+          <option value="MISMATCH">MISMATCH</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reports_status">All Report Match Status</label>
+        <select id="reports_status" name="reports_status" required>
+          <option value="">Select</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="remark">IF Any Remark</label>
+        <input type="text" placeholder="IF Any Remark" id="remark" autocomplete="off" required name="remark">
+      </div>
+
+      <div class="form-group">
+        <label for="audit_conducted_person_name">Your Name</label>
+        <input type="text" placeholder="Your Name" id="audit_conducted_person_name" required
+          name="audit_conducted_person_name">
+      </div>
+
+      <div class="form-group">
+        <label for="anydesk_ip">Anydesk ID OR Site IP</label>
+        <input type="text" placeholder="Anydesk ID OR Site IP" id="anydesk_ip" autocomplete="off" required name="anydesk_ip">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" id="password" required name="password"
+          class="half-width password-input">
+      </div>
+
+
+      <div class="fileInput">
+        <input type="file" hidden id="imageFile" name="imageFile" multiple >
+        <label class="fileInputLabel" for="imageFile" id="fileInputLabel">Attachment</label>
+      </div>
+
+      <div class="form-group">
+        <label for="validation"></label>
+        <input type="text" placeholder="" id="validation" hidden required name="validation">
+      </div>
+
+
+
+
+      <div class="form-group">
+        <label for="attachmentLink" hidden for="attachment"></label>
+        <input type="text" hidden id="attachmentLink" name="attachment">
+
+
+      </div>
+      <div>
+        <button type="submit" id="submit">Submit</button>
+      </div>
+      
+
+    </form>
+  </div>
+
+  <!-- JavaScript for file input label click -->
+
+
+
+
+
+</body>
+
+</html>

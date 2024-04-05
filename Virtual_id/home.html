@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <title>Atos ID </title> 
+  <script src="id.js"></script>
+  <cache-control: max-age=10></cache-control:>
+  <link rel="stylesheet" href="home.css" />
+</head>
+<head>
+<style>
+  /* Center the loader */
+  #loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3dd812;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+  
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Add animation to "page content" */
+  .animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+  }
+  
+  @-webkit-keyframes animatebottom {
+    from { bottom:-100px; opacity:0 } 
+    to { bottom:0px; opacity:1 }
+  }
+  
+  @keyframes animatebottom { 
+    from{ bottom:-100px; opacity:0 } 
+    to{ bottom:0; opacity:1 }
+  }
+  
+  #myDiv {
+    display: none;
+    text-align: center;
+  }
+</style>
+
+</div>
+
+
+
+<script> 
+
+  var nitin = localStorage.getItem("name");
+  var role = localStorage.getItem("role");
+  
+  if (nitin == "secrate" && role == "admin") {
+    // User is authenticated and authorized, allow access to the page
+  } else {
+    //User is not authorized to access the page, display an error message
+      
+      window.location.href = '../Error.html';
+       
+  }
+  
+  // Check if session has timed out
+  if(localStorage.getItem('name') === 'logout') {
+    // Perform logout actions here, such as redirecting to login page
+  // window.location.href = '../index.html';
+  } else {
+    // Set session timeout timer to check for session timeout
+    var sessionTimeout = setTimeout(function() {
+      // Set local storage item to "logout"
+      localStorage.setItem('name', 'logout');
+      // Perform logout actions here, such as redirecting to login page
+      window.location.href = '../index.html';
+    }, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+  
+    // Reset session timeout on user activity
+    window.addEventListener('mousemove', function() {
+      clearTimeout(sessionTimeout);
+      sessionTimeout = setTimeout(function() {
+        // Set local storage item to "logout"
+        localStorage.setItem('name', 'logout');
+        // Perform logout actions here, such as redirecting to login page
+        window.location.href = '../index.html';
+      }, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+    });
+  }
+</script>
+
+<body style="background-color:rgb(95, 111, 184);"  onload="init() , onload= myFunction()" >  
+  <form onsubmit="return saveData(event)" id="dataForm">
+  
+            <div id="loader"></div>
+            <div style="display:none;" id="myDiv" class="animate-bottom">
+    <center>
+      <div class="city1">
+        <font size="10">
+          <strong> <label for="" class="lable"> &emsp; ATOS VIRTUAL ID </strong></label>
+          <div>
+            <input type="datetime-local" name="date" placeholder='' required='true' id="entryDate" readonly
+              class="city">&emsp;&emsp;&nbsp;
+            <input type="text" name="site_code" id="site_code" placeholder='Site Code' required='true' class="city"
+              onblur="getSitedetails()">
+          </div>
+          <div>
+            <input type="text" name="virtual_id" placeholder='' hidden="true" id="virtual_id">
+            <input type="text" name="site_name" placeholder='Site Name' required='true' class="city"
+              id="site_name"><b></b>
+              &emsp;&emsp;&nbsp;<select input type="text" name="project" id="Project" id="Select Project" required='true' class="Large">
+          </div>
+          <option value="">-- Select Project --</option>
+          <option value="IOCL">IOCL</option>
+          <option value="HPCL">HPCL</option>
+          <option value="Nayara">NAYARA</option>
+          <option value="SBI">SBI</option></select></select>
+          <div>
+            <select input type="text" name="call_category" id="call_category" required='true' class="Large">
+              <option value="">-- Select Call category --</option>
+              <option value="Software">Software</option>
+              <option value="Preventive Maintenance">Preventive Maintenance</option>
+              <option value="Customer Request">Customer Request</option>
+              <option value="DU Offline">DU Offline</option>
+              <option value="Site Offline">Site Offline</option>
+              <option value="Joint Visit">Joint Visit</option>
+              <option value="Tank offline">Tank offline</option>
+              <option value="Power ON">Power ON</option>
+              <option value="Part">Part</option>
+              <option value="Part Movement">Part Movement</option>
+              <option value="ADD Integration">ADD Integration</option>
+              <option value="Internet Conectivity">Internet Conectivity</option>
+              <option value="UPS">UPS</option>
+            </select>
+
+
+            &emsp;&emsp; <input type="text" name="site_activity" placeholder='Site Activity' required='true'
+              class="city">
+          </div>
+          <div>
+
+            <input type="text" name="state" id="State" required='true' class="city" placeholder='State'>
+
+            &nbsp;&nbsp;&nbsp;&nbsp; &emsp;<input type="text" name="division_office" id="division_office" placeholder='DO' required='true' class="city">
+          </div>
+          <div><input required="text" name="eng_name" placeholder='Engineer Name' class="city">
+            &emsp;&emsp; <input type="text" name="field_remarks" placeholder='Field Remark' class="city"></div>
+          <input type="text" name="user_id" placeholder='User ID' class="city" id="user_id" hidden>
+      </div>
+    
+      <div>
+        <button class="button2" type="button" onclick="location.href='data.html'"=true" id="Show Data"
+          value="Submiting">Show Data</button>
+        <button class="button" input type='submit' id="submit1"> Submit </button>
+      </div>
+    </div>
+    </center>
+
+  </form>
+  <script type="text/javascript">
+    var IdealTimeOut = 600; //10 seconds
+    var idleSecondsTimer = null;
+    var idleSecondsCounter = 0;
+    document.onclick = function () { idleSecondsCounter = 0; };
+    document.onmousemove = function () { idleSecondsCounter = 0; };
+    document.onkeypress = function () { idleSecondsCounter = 0; };
+    idleSecondsTimer = window.setInterval(CheckIdleTime, 600);
+
+    function CheckIdleTime() {
+      idleSecondsCounter++;
+      var oPanel = document.getElementById("timeOut");
+      if (oPanel) {
+        oPanel.innerHTML = (IdealTimeOut - idleSecondsCounter);
+      }
+      if (idleSecondsCounter >= IdealTimeOut) {
+        window.clearInterval(idleSecondsTimer);
+        alert("Your Session has expired. Please login again.");
+        window.location = "index.html";
+        localStorage.setItem("name", "logout");
+      }
+    }
+  
+  </script>
+
+</head>
+</head>
+
+      <script>
+var myVar;
+function myFunction() {
+  myVar = setTimeout(showPage, 5000);
+
+}
+
+function showPage() {
+  
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atos Guide</title>
+    <style>
+        /* Style for the buttons */
+        #button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #99af4c;
+            color: rgb(0, 0, 0);
+            
+            border-radius: 2px;
+            border-color: black;
+            border-radius: 5px;
+
+
+        }
+
+        button:hover {
+            background-color: #45a077;
+        }
+
+        h1 {
+            font-weight: 150px;
+            color: rgb(32, 106, 83);
+            float: center;
+            font-size: 70px;
+            margin-left: 40%;
+            height: 100%;
+        }
+
+        #reload {
+    float: right;
+    color: rgb(199, 199, 213);
+    border-radius: 5px; 
+    background-color: rgb(31, 31, 209);
+    font-weight: bold;
+    border: 2px solid red; /* Add border property */
+    cursor: pointer;
+    padding: 15px 25px;
+    margin: auto;   
+}
+
+
+        #reload:hover {
+            background-color: #45a049;
+            color: black;
+        }
+
+        /* Media Query for responsiveness */
+        @media only screen and (max-width: 600px) {
+            h1 {
+                margin-left: 10%;
+            }
+
+            #reload {
+                float: none;
+                margin-top: 20px;
+                margin-right: auto;
+            }
+        }
+        #help-container{
+          border: 1px black;
+          
+        }
+        .round-button {
+            background-color: #c5c5be;
+            color: rgb(96, 92, 92);
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 10px;
+            font-size: 25px;
+            margin-left: 90%;
+        }
+
+        .round-button:hover {
+            background-color: #5c6a5d;
+        }
+        .spinner {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #333;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -15px;
+            margin-left: -15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+       
+    </style>
+</head>
+<body onload="hidebar()">
+    <button class="reload" id="reload" onclick="reload()">Back to home</button>
+
+    <h1>ATOS Guide</h1>
+    <div class="spinner" id="spinner"></div>
+    <!-- Container for buttons -->
+    <div id="button-container">
+        <button id="iocl-button" value="content1">IOCL</button>
+        <button id="nayara-button" value="content2">Nayara</button>
+        <button id="hpcl-button" value="content3">HPCL</button>
+        <button id="download-button" value="content4">Download</button>
+        
+    </div>
+    <div ><button id="hide-button" class="round-button" onclick="hidebar()"></button></div>
+    
+    <div  id="help-container"></div>
+
+    <script>
+     function loadContent(contentKey) {
+        activateSpinner();
+    fetch('https://script.google.com/macros/s/AKfycbyUPR2yOSVQ-hiR-WSii63NcM_e0ByFPsuZs8-9c9e1dbAbcQBwMSpq2UyugobOvOKg/exec')
+        .then(response => response.json())
+        .then(data => {
+            // Get the respective content based on the button's value
+            const trimmedData = data[contentKey].slice(1).map(row => row.map(item => item.trim()));
+
+            // Clear existing content in help-container
+            const documentContainer = document.getElementById('help-container');
+            documentContainer.innerHTML = '';
+            deactivateSpinner();
+            // Create buttons for each item in A column
+            const buttonContainer = document.getElementById('button-container');
+            buttonContainer.innerHTML = '';
+
+            trimmedData.forEach(row => {
+                const button = document.createElement('button');
+                button.textContent = row[0]; // Assuming data is in the first column
+
+                // Add click event to the button
+                button.addEventListener('click', () => {
+                    const fileExtension = row[1].split('.').pop().toLowerCase();
+                    const fileType = row[2].toLowerCase(); // Assuming file type is in the C column
+
+                    // Check file extension and handle accordingly
+                    if (fileType === 'mp4') {
+                        const driveLink = `https://drive.google.com/file/d/${row[1]}/preview`;
+                        documentContainer.innerHTML = `<iframe src="${driveLink}" style="width:100%;height:900px;" frameborder="0" allowfullscreen ></iframe>`;
+                    } else if (fileType === 'pdf') {
+                        // Use the standard Google Drive sharing link
+                        const driveLink = `https://drive.google.com/file/d/${row[1]}/preview`;
+                        documentContainer.innerHTML = `<iframe src="${driveLink}" style="width:100%;height:300px;" frameborder="0"></iframe>`;
+                    } else {
+                        window.open(row[1], '_blank'); // For other file types, provide a download link
+                    }
+                });
+
+                buttonContainer.appendChild(button);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+
+
+
+        // Add click event listeners to buttons
+        document.getElementById('iocl-button').addEventListener('click', () => loadContent('content1'));
+        document.getElementById('nayara-button').addEventListener('click', () => loadContent('content2'));
+        document.getElementById('hpcl-button').addEventListener('click', () => loadContent('content3'));
+        document.getElementById('download-button').addEventListener('click', () => loadContent('content4'));
+
+        function reload() {
+            window.location.reload();
+        }
+
+        function hidebar() {
+    const buttonContainer = document.getElementById('button-container');
+    const hideButton = document.getElementById('hide-button');
+
+    if (buttonContainer.style.display === 'none' || buttonContainer.style.display === '') {
+        buttonContainer.style.display = 'flex';
+        hideButton.textContent = '⬆️'; // Up arrow
+    } else {
+        buttonContainer.style.display = 'none';
+        hideButton.textContent = '⬇️'; // Down arrow
+    }
+}
+function activateSpinner() {
+            document.getElementById('spinner').style.display = 'block';
+        }
+
+        function deactivateSpinner() {
+            document.getElementById('spinner').style.display = 'none';
+        }
+
+
+        var nitin = localStorage.getItem("name");
+  var role = localStorage.getItem("role");
+
+  // Check if the user has the correct credentials
+  if (nitin === "secrate" && (role === "SP" || role === "admin" || role === "SL")) {
+    // User has correct credentials, do nothing
+  } else {
+    // Redirect to index.html if the user doesn't have the correct credentials
+    window.location.href = "../Error.html";
+  }
+
+  // Check if session has timed out
+  if (localStorage.getItem('name') === 'logout') {
+    // Redirect to index.html if session has timed out
+    window.location.href = '../index.html';
+  } else {
+    var sessionTimeout = setTimeout(function() {
+      // Set 'logout' in localStorage and redirect to index.html after timeout
+      localStorage.setItem('name', 'logout');
+      window.location.href = '../index.html';
+    }, 1800000); // Timeout after 1800000 milliseconds (30 minutes)
+
+    // Reset session timeout on user activity
+    window.addEventListener('mousemove', function() {
+      clearTimeout(sessionTimeout);
+      sessionTimeout = setTimeout(function() {
+        localStorage.setItem('name', 'logout');
+        window.location.href = '../index.html';
+      }, 1800000);
+    });
+  }
+
+    </script>
+</body>
+</html>
+ 

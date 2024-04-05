@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Data old IOCL</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="table.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body onload="hide()">
+  <header>IOCL Previous Audit</header>
+  <br /><br /><br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+ 
+  <input type="text" class="search-box" id="searchInput" onkeyup="filterTable()" placeholder="Search for Site Code..." />
+  <input type="text" class="search-box" id="site_name" onkeyup="filterTable()" placeholder="Search for Site Name..." />
+  <select id="state" class="search-box" onchange="displayDataForState(this.value)">
+    <option value="">--State--</option>
+    <option value="Bihar SO">Bihar SO</option>
+    <option value="Delhi &amp; Haryana SO">Delhi &amp; Haryana SO</option>
+    <option value="Gujarat SO">Gujarat SO</option>
+    <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+    <option value="Karnataka SO">Karnataka SO</option>
+    <option value="Kerala SO">Kerala SO</option>
+    <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+    <option value="Maharashtra SO">Maharashtra SO</option>
+    <option value="Odisha SO">Odisha SO</option>
+    <option value="Punjab &amp;Himachal SO">Punjab &amp;Himachal SO</option>
+    <option value="Rajasthan SO">Rajasthan SO</option>
+    <option value="Tamilnadu SO">Tamilnadu SO</option>
+    <option value="TAPSO">TAPSO</option>
+    <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+    <option value="Uttar Pradesh SO -II">Uttar Pradesh SO -II</option>
+    <option value="West Bengal SO">West Bengal SO</option>
+  </select>
+  <button class="btn" id="download_button" onclick="downloadTable()">Download</button>
+  </div>
+  <br /><br />
+  <div class="loader-container hidden" id="loader">
+    <div class="loader"></div>
+  </div>
+  <table class="table" id="mytable"></table>
+
+</body>
+<script class="u-script" type="text/javascript" src="old.js" defer=""></script>
+</html>

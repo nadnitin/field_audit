@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>RO Data Table IOCL</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="table.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  
+  </head>
+  <script> var nitin = localStorage.getItem("name");
+
+    if (nitin == "secrate") {
+    }
+    else {
+      window.location.href = "../index.html";
+    }
+
+    // Check if session has timed out
+		if(localStorage.getItem('name') === 'logout') {
+		  // Perform logout actions here, such as redirecting to login page
+		  window.location.href = '../index.html';
+		} else {
+		  // Set session timeout timer to check for session timeout
+		  var sessionTimeout = setTimeout(function() {
+			// Set local storage item to "logout"
+			localStorage.setItem('name', 'logout');
+			// Perform logout actions here, such as redirecting to login page
+			window.location.href = '../index.html';
+		  }, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+		
+		  // Reset session timeout on user activity
+		  window.addEventListener('mousemove', function() {
+			clearTimeout(sessionTimeout);
+			sessionTimeout = setTimeout(function() {
+			  // Set local storage item to "logout"
+			  localStorage.setItem('name', 'logout');
+			  // Perform logout actions here, such as redirecting to login page
+			  window.location.href = '../index.html';
+			}, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+		  });
+		}
+  </script>
+  <body onload="hide()">
+    <header>IOCL</header>
+    <br /><br /><br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+    <button class="btn2" onclick="loadRegion('East')">East</button>
+    <button class="btn2" onclick="loadRegion('North')">North</button>
+    <button class="btn2" onclick="loadRegion('West')">West</button>
+    <button class="btn2" onclick="loadRegion('South')">South</button>
+    <button class="btn3" id="master" onclick="loadRegion('master')">Master</button>
+    <button class="btn3" id="master_download" onclick="downloadExcel()">Master Download</button>
+    <input
+      type="text"
+      class="search-box"
+      id="searchInput"
+      onkeyup="filterTable()"
+      placeholder="Search for Site Code..."
+    />
+    <input
+      type="text"
+      class="search-box"
+      id="site_name"
+      onkeyup="filterTable()"
+      placeholder="Search for Site Name..."
+    />
+    
+    
+    <select id="state" class="search-box" onchange="filterTable()">
+      <option value="">--State--</option>
+      <option value="">Select ALL</option>
+      <option value="Bihar SO">Bihar SO</option>
+      <option value="Delhi &amp; Haryana SO">Delhi &amp; Haryana SO</option>
+      <option value="Gujarat SO">Gujarat SO</option>
+      <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+      <option value="Karnataka SO">Karnataka SO</option>
+      <option value="Kerala SO">Kerala SO</option>
+      <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+      <option value="Maharashtra SO">Maharashtra SO</option>
+      <option value="Odisha SO">Odisha SO</option>
+      <option value="Punjab &amp;Himachal SO">Punjab &amp;Himachal SO</option>
+      <option value="Rajasthan SO">Rajasthan SO</option>
+      <option value="Tamilnadu SO">Tamilnadu SO</option>
+      <option value="TAPSO">TAPSO</option>
+      <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+      <option value="Uttar Pradesh SO -II">Uttar Pradesh SO -II</option>
+      <option value="West Bengal SO">West Bengal SO</option>
+    </select>
+
+    
+    <button class="btn" id="download_button" onclick="downloadTable()">Download</button>
+    
+    
+    </div>
+   
+    <br /><br />
+    <div class="loader-container hidden" id="loader">
+    <div class="loader"></div></div>
+    
+        
+
+    <table class="table" id="mytable"></table>
+    
+    </body>
+    
+    <script class="u-script" type="text/javascript" src="table.js" defer=""></script>
+    <script type="text/javascript">

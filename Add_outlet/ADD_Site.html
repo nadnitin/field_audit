@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add outlet</title>
+    <link rel="stylesheet" href="add.css" />
+    <script src="add.js"></script>
+    <script src="script.js"></script>
+</head>
+<script> 
+  var nitin = localStorage.getItem("name");
+  var role = localStorage.getItem("role");
+  
+  if (nitin == "secrate" && role == "admin") {
+    // User is authenticated and authorized, allow access to the page
+  } else {
+    //User is not authorized to access the page, display an error message
+      
+      window.location.href = '../Error.html';
+       
+  }
+  
+  // Check if session has timed out
+  if(localStorage.getItem('name') === 'logout') {
+    // Perform logout actions here, such as redirecting to login page
+  // window.location.href = '../index.html';
+  } else {
+    // Set session timeout timer to check for session timeout
+    var sessionTimeout = setTimeout(function() {
+      // Set local storage item to "logout"
+      localStorage.setItem('name', 'logout');
+      // Perform logout actions here, such as redirecting to login page
+      window.location.href = '../index.html';
+    }, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+  
+    // Reset session timeout on user activity
+    window.addEventListener('mousemove', function() {
+      clearTimeout(sessionTimeout);
+      sessionTimeout = setTimeout(function() {
+        // Set local storage item to "logout"
+        localStorage.setItem('name', 'logout');
+        // Perform logout actions here, such as redirecting to login page
+        window.location.href = '../index.html';
+      }, 1800000); // Set timeout period to 30 minutes (in milliseconds)
+    });
+  }
+  </script>
+  
+	
+
+<body style="background-color: rgb(199, 216, 216);">
+  <header class="header"> IOCL ADD Outlet</header>
+  <div style="text-align: center;">
+   
+  </div>
+    <div class="container" >
+        <form id="iocl">
+
+    
+          <label for="site_code">Site Code:</label>
+          <input type="text" id="site_code" name="site_code"  placeholder="Site Code">
+
+
+            <label for="site_name">Site Name:</label>
+            <input type="text" id="site_name" name="site_name" placeholder="Site Name"  >
+            <label for="State">State:</label>
+            <select class="select" id="state" name="state" onchange="populateCountriesIocl()" >
+              <option value="">Select state</option>
+              <option value="Bihar SO">Bihar SO</option>
+              <option value="Tamilnadu SO">Tamilnadu SO</option>
+              <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+              <option value="Punjab &Himachal SO">Punjab &Himachal SO</option>
+              <option value="West Bengal SO">West Bengal SO</option>
+              <option value="Gujarat SO">Gujarat SO</option>
+              <option value="Karnataka SO">Karnataka SO</option>
+              <option value="Delhi & Haryana SO">Delhi & Haryana SO</option>
+              <option value="Uttar Pradesh SO -II">Uttar Pradesh SO -II</option>
+              <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+              <option value="Kerala SO">Kerala SO</option>
+              <option value="Odisha SO">Odisha SO</option>
+              <option value="Rajasthan SO">Rajasthan SO</option>
+              <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+              <option value="TAPSO">TAPSO</option>
+              <option value="Maharashtra SO">Maharashtra SO</option>
+            </select>
+
+            <label for="DO">Divistion Office:</label>
+            <select class="select" id="division_office" name="do_office" placeholder="Divistion Office" ></select>
+            
+          
+            <button class="button" id="submit1" type="submit" onclick="saveDataIOCL()" > Submit</button>
+          </form></div></body>
+         
+
+<body>
+
+
+  <header class="header"> HPCL ADD Outlet</header>
+    <div class="container">
+        <form id="hpcl">
+
+    
+          <label for="ro_code">RO Code:</label>
+          <input type="text" id="ro_code" name="ro_code" placeholder="RO Code">
+
+
+            <label for="ro_name">RO Name:</label>
+            <input type="text" id="ro_name" name="ro_name" placeholder="RO Name">
+
+            <label for="State">State:</label>
+            <select class="select" id="State" type="text" name="state" onchange="populateCountriesHpcl()" >
+              <option value="">Select state</option>
+              <option value="Bihar SO">Bihar SO</option>
+              <option value="Delhi & Haryana SO">Delhi &amp; Haryana SO</option>
+              <option value="Gujarat SO">Gujarat SO</option>
+              <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+              <option value="Kerala SO">Kerala SO</option>
+              <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+              <option value="Maharashtra SO">Maharashtra SO</option>
+              <option value="Odisha SO">Odisha SO</option>
+              <option value="Punjab &Himachal SO">Punjab &amp; Himachal SO</option>
+              <option value="Rajasthan SO">Rajasthan SO</option>
+              <option value="Tamilnadu SO">Tamilnadu SO</option>
+              <option value="TAPSO">TAPSO</option>
+              <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+              <option value="Uttar Pradesh SO-II">Uttar Pradesh SO-II</option>
+              <option value="West Bengal SO">West Bengal SO</option>
+            </select>
+
+            <label for="regional_office">Regional Office:</label>
+            <select class="select" id="regional_office" name="regional_office" ></select>
+          
+            <button class="button" onclick="saveDataHpcl()" style="background-color: rgb(54, 79, 215);" type="submit" id="submit2" > Submit</button>
+          </form></div>
+         
+    
+</body>
+<body>
+
+
+  <header class="header"> Nayara ADD Outlet</header>
+    <div class="container">
+        <form id="Nayara">
+
+    
+          <label for="ro_code">RO Code:</label>
+          <input type="text" id="ro_code" name="ro_code" placeholder="RO Code">
+
+
+            <label for="ro">RO Name:</label>
+            <input type="text" id="ro" name="ro_name" placeholder="RO Name">
+
+            <label for="State1">State:</label>
+            <select type="text" id="state1" name="state" >
+              <option value="">Select State</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Orissa">Orissa</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="West Bengal">West Bengal</option>
+            </select>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="Location">
+          
+            <button class="button" onclick="saveDataNayara()" type="button" style="background-color: rgb(25, 32, 1);"  id="submit3" > Submit</button>
+          </form></div>
+        
+    
+</body>
+</html>

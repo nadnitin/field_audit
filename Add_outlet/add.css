@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #c1b5b5;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #d0e1e4;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type=text] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: black;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+input[type=submit] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fafafa;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type=submit]:hover {
+    background-color: #0062cc;
+}
+
+
+header {
+color: #830202c6; /* set font color */
+padding: 20px; /* add some padding for spacing */
+font-size: 50px; /* set font size */
+text-align: center;
+font-weight: bold;
+text-decoration: solid 
+}
+
+
+/* Style for the heading element */
+header h1 {
+margin: 10%; /* remove margin */
+font-size: 50px; /* set font size */
+}
+
+/* Style for the navigation links */
+header nav {
+display: inline-block; /* make the navigation links appear horizontally */
+}
+
+header nav a {
+color: #f1f1f1; /* set link font color */
+text-decoration: solid /* remove underline */
+
+}
+
+/* Default button styles */
+.button {
+display: inline-block;
+background-color: #064e08;
+color: rgb(255, 255, 255);
+padding: 10px 50px;
+font-display: w;
+border: rgb(14, 16, 17);
+border-radius: 7px;
+cursor: pointer;
+text-align: center;
+font-weight: bold;
+border: black;
+
+
+}
+
+/* Hover effect */
+.button:hover {
+background-color: #16731a;
+border: black;
+}
+
+/* Active state */
+.button:active {
+background-color: #3e8e41;
+box-shadow: 0 5px #666;
+transform: translateY(4px);
+border: black;
+}
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #5DADE2;
+  }
+  
+  option {
+    padding: 10px;
+  }
+  
