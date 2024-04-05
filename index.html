@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="login.css" media="screen">
-    <script class="u-script" type="text/javascript" src="login.js" defer=""></script>
-    <title>ATOS Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATOS Login</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="test.css">
 </head>
-<body> <form method="post" id="form_id" name="myform">
-    <div class="login">
-      <div class="login-screen">
-        <div class="app-title">
-          <h1>Audit Login</h1>
-        </div>
-  
-        <div class="login-form">
-          <div class="control-group">
-          <input type="text" class="login-field" placeholder="username" name="username" id="username">
-          <label class="login-field-icon fui-user" for="login-name"></label>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-header">
+            <h3 class="text-center">Audit Login</h3>
           </div>
-  
-          <div class="control-group">
-          <input type="password" class="login-field" name="password" placeholder="password" id="password">
-          <label class="login-field-icon fui-lock" for="login-pass"></label>
+          <div class="card-body">
+            <form method="post" id="form_id" name="myform">
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+              </div>
+              <button type="submit" id="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
           </div>
-  
-          <button type="submit" id="submit" class="btn btn-primary btn-large btn-block" >  Login</button> 
-         
+          <h2 class="card-footer ">
+            Field engineer can login without username & password by clicking on login button
+          </h2>
         </div>
-        <div id="loader" class="loader"></div>
       </div>
     </div>
-</form>
-  </body>
-  </html>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script class="u-script" type="text/javascript" src="login.js" defer=""></script>
+</body>
+</html>
