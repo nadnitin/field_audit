@@ -352,7 +352,7 @@ document.addEventListener('contextmenu', disableRightClick);
 
 function downloadExcel() {
   // Set the currentRegionURL for master region
-  let currentRegionURL = 'https://docs.google.com/spreadsheets/d/1jG4PoD5lQmtW43TGLWjUeTXEDh7aS2WeGJM0ljZv39U/edit?usp=sharing';
+  let currentRegionURL = 'https://docs.google.com/spreadsheets/d/1x6pX-Gq_ny3uLnm3fkrQLSU0eWqNDBCfDIvQf4rItA8/edit#gid=0';
   
   // Create a temporary anchor element to trigger the download
   const downloadLink = document.createElement('a');
