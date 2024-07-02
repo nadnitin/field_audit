@@ -260,8 +260,8 @@
       </div>
 
       <div class="form-group">
-        <label for="audit_conducted_person_name">Your Name</label>
-        <input type="text" placeholder="Your Name" id="audit_conducted_person_name" required
+        <label for="audit_conducted_person_name">Employee ID</label>
+        <input type="text" readonly id="audit_conducted_person_name" required
           name="audit_conducted_person_name">
       </div>
 
@@ -311,5 +311,14 @@
 
 
 </body>
+<script>
+  // Retrieve the value from localStorage
+  const username = localStorage.getItem('username');
+  
+  // Check if username exists in localStorage and set it to the input field
+  if (username) {
+    document.getElementById('audit_conducted_person_name').value = username;
+  }
+</script>
 
 </html>
