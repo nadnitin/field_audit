@@ -23,7 +23,7 @@ async function validate() {
   activateLoader();
 
   try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzCEkf5RaZaaOlw7pTJrYGk4RmLB6Ydc3USuUd8YXTiM9luAAqaC5bUXqNeil63FNFkvA/exec');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxt-_SmtG7TsIr00RP_bmNVTUj2hrpW7dOEyIn7PIX3jtqXQmfIMKfjPkyAKk6lTqfPWA/exec?action=getData');
 
       if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -31,9 +31,8 @@ async function validate() {
 
       const data = await response.json();
 
-      
-
       const userdata = data?.content;
+     //console.log(userdata);
       if (userdata && userdata.length > 0) {
           const foundUser = userdata.find(user => user[0] === username && user[1] === b64EncodeUnicode(password));
 
@@ -46,7 +45,6 @@ async function validate() {
               localStorage.setItem("account_status", foundUser[3]);
 
               if (foundUser[3] === "active") {
-                 
                   window.location = "home.html";
               } else {
                   deactivateLoader();
