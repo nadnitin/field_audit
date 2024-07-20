@@ -176,6 +176,7 @@ iframe {
       <li><a id="add_outlet" onclick="loadPage('Add_outlet/ADD_Site.html')">Add outlet</a></li>
       <li><a id = "vertual_id" onclick="loadPage('Virtual_id/home.html')"> Virtual ID</a></li>
       <li><a onclick="loadPage('Atos_help/help.html')"> Atos Help</a></li>
+      <li><a id= "user_master" href="https://script.google.com/macros/s/AKfycbyVr7mZPKgKDQ3OZClUpbEbkcRIyjRgAZQhUwZdKE4w0z9j7dnR8xrJiF5pARRWgIzpUA/exec"> User Master</a></li>
 
       <a id="username"class="user" > User ID </a>
       <a class="log"  onclick="logout()">Log Out</a>
@@ -240,19 +241,23 @@ var nitin = localStorage.getItem("name");
   var downloadButton = document.getElementById('vertual_id');
   var master = document.getElementById('add_outlet');
   var old = document.getElementById('button3-dropdown');
+  var user_master = document.getElementById('user_master');
   if (role =='admin') {
     downloadButton.style.display = 'show';
     master.style.display='show';
     old.style.display='show';
+    user_master.style.display='show';
   }
   else if (role =='SL') {
     downloadButton.style.display = 'none';
     master.style.display='none';
+    user_master.style.display='none';
     
   }
   else{ downloadButton.style.display = 'none';
   master.style.display='none';
   old.style.display='none';
+  user_master.style.display='none';
   }
 }
 function disableRightClick(event) {
