@@ -81,9 +81,7 @@ function login() {
   var password = document.getElementById("password").value;
 
   if (username === '' && password === '') {
-    localStorage.setItem("role", "FE");
-    localStorage.setItem("name", "secrate");
-    window.location = "home.html";
+   validate();
   } else {
     validate();
   }
