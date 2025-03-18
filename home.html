@@ -206,13 +206,13 @@ var nitin = localStorage.getItem("name");
 if (nitin === "secrate") {
   // Stay on page if "secrate" is valid
 } else {
-  window.location.replace("../index.html"); // Redirect to index if not valid
+  window.location.replace("/index.html"); // Redirect to index if not valid
   
 }
 
 // Logout or timeout logic
 if (localStorage.getItem('name') === 'logout') {
-  window.location.replace('../index.html'); // Redirect to index if logged out
+  window.location.replace('/index.html'); // Redirect to index if logged out
 } else {
   // Set username to input field if it exists
   const username = localStorage.getItem('username');
@@ -227,7 +227,7 @@ if (localStorage.getItem('name') === 'logout') {
     localStorage.setItem("role", "");
     localStorage.setItem("username", "");
     localStorage.setItem("account_status", "");
-    window.location.replace('../index.html');
+    window.location.replace('/index.html');
     
   }, 1800000); // 1800000 ms = 30 minutes
 
@@ -241,7 +241,7 @@ if (localStorage.getItem('name') === 'logout') {
       localStorage.setItem("role", "");
       localStorage.setItem("username", "");
       localStorage.setItem("account_status", "");
-      window.location.replace('../index.html');
+      window.location.replace('/index.html');
       
     }, 1800000);
   });
