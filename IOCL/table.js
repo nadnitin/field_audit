@@ -1,13 +1,12 @@
 
 //5th code 
 function loadRegion(region) {
-  let isLoading = false; // Initialize isLoading flag inside the function
+  let isLoading = false;
   
   if (isLoading) {
-    return; // Don't proceed if data is already being loaded
+    return;
   }
 
-  // Update the currentRegionURL based on the selected region
   let currentRegionURL = '';
   switch (region) {
     case 'East':
@@ -23,140 +22,41 @@ function loadRegion(region) {
       currentRegionURL = 'https://script.google.com/macros/s/AKfycbylyUi8PLo-ueTrdnoAQiLM404s1DiqsSdJTHRGJcnTpqylrulTdZ_O-wN3Yy4Wht2G/exec';
       break;
     case 'master':
-      currentRegionURL = 'https://script.google.com/macros/s/AKfycbwbSYIkrxgipZEgWhlbdevdtEnyXrXm6pNvAGlirXtEe46omi3I3VxLnsFK4biJ2cgotw/exec';
-      break;
+      downloadMasterExcel();
+      return;
     default:
-      currentRegionURL = ''; // Handle invalid region
+      currentRegionURL = '';
   }
 
-  isLoading = true; // Set the flag to indicate loading
+  isLoading = true;
   document.getElementById('mytable').innerHTML = '';
-  // Show the loader
   document.getElementById('loader').classList.remove('hidden');
 
-  // Make a request to your server-side script
   fetch(currentRegionURL)
     .then((res) => res.json())
     .then((data) => {
-      // Handle data loading completion
-      isLoading = false; // Data loading is complete
-
-      // Hide the loader
+      isLoading = false;
       document.getElementById('loader').classList.add('hidden');
       const sitedata = data;
-//console.log(data);
-      // Process and render data in your HTML
       if (sitedata && sitedata.content.length > 1) {
-        // Exclude the first row
         sitedata.content.sort((a, b) => new Date(b[0]) - new Date(a[0]));
         let th = '';
         let tdRange = [];
         switch (localStorage.getItem('role')) {
           case 'FE':
-            th = `
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Site Code</th>
-                  <th>Site Name</th>
-                  <th>State</th>
-                  <th>DO Office</th>
-                  <th>Your Name</th>
-                  <th>Audit Status</th>
-                  <th>Attachment</th>
-                </tr>
-              </thead>`;
+            th = `<thead><tr><th>Date</th><th>Site Code</th><th>Site Name</th><th>State</th><th>DO Office</th><th>Your Name</th><th>Audit Status</th><th>Attachment</th></tr></thead>`;
             tdRange = [0, 1, 2, 3, 4, 29, 32, 33];
             break;
           case 'SL':
-            th = `
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Site Code</th>
-                  <th>Site Name</th>
-                  <th>State</th>
-                  <th>DO Office</th>
-                  <th>Total Tank</th>
-                  <th>Online Tank</th>
-                  <th>Offline Tank</th>
-                  <th>Tank Offline Remark</th>
-                  <th>Total DU</th>
-                  <th>Online DU</th>
-                  <th>Offline DU</th>
-                  <th>DU Offline Remark</th>
-                  <th>Motherboard Make</th>
-                  <th>Motherboard Serial</th>
-                  <th>UPS Status</th>
-                  <th>UPS Remark</th>
-                  <th>UPS Battery</th>
-                  <th>UPS Battery Remark</th>
-                  <th>DG Status</th>
-                  <th>FCC Probe Shield</th>
-                  <th>Zener Barrier</th>
-                  <th>FCC Earth Voltage</th>
-                  <th>Internet Connectivity</th>
-                  <th>Site Status</th>
-                  <th>Site Offline Remark</th>
-                  <th>RDB VS CMS Status</th>
-                  <th>Interlock Report</th>
-                  <th>FOIR Report Last 5 Days</th>
-                  <th>Your Name</th>
-                  <th>ALL Report Status</th>
-                  <th>IF Any Remark</th>
-                  <th>Audit Status</th>
-                  <th>Attachment</th>
-                  ${localStorage.getItem('role') === 'admin' ? '<th>Anydesk OR IP</th><th>Password</th>' : ''}
-                </tr>
-              </thead>`;
-            tdRange = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33];
+            th = `<thead><tr><th>Date</th><th>Site Code</th><th>Site Name</th><th>State</th><th>DO Office</th><th>Total Tank</th><th>Online Tank</th><th>Offline Tank</th><th>Tank Offline Remark</th><th>Total DU</th><th>Online DU</th><th>Offline DU</th><th>DU Offline Remark</th><th>Motherboard Make</th><th>Motherboard Serial</th><th>UPS Status</th><th>UPS Remark</th><th>UPS Battery</th><th>UPS Battery Remark</th><th>DG Status</th><th>FCC Probe Shield</th><th>Zener Barrier</th><th>FCC Earth Voltage</th><th>Internet Connectivity</th><th>Site Status</th><th>Site Offline Remark</th><th>RDB VS CMS Status</th><th>Interlock Report</th><th>FOIR Report Last 5 Days</th><th>Your Name</th><th>ALL Report Status</th><th>IF Any Remark</th><th>Audit Status</th><th>Attachment</th></tr></thead>`;
+            tdRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
             break;
           case 'admin':
-            th = `
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Site Code</th>
-                  <th>Site Name</th>
-                  <th>State</th>
-                  <th>DO Office</th>
-                  <th>Total Tank</th>
-                  <th>Online Tank</th>
-                  <th>Offline Tank</th>
-                  <th>Tank Offline Remark</th>
-                  <th>Total DU</th>
-                  <th>Online DU</th>
-                  <th>Offline DU</th>
-                  <th>DU Offline Remark</th>
-                  <th>Motherboard Make</th>
-                  <th>Motherboard Serial</th>
-                  <th>UPS Status</th>
-                  <th>UPS Remark</th>
-                  <th>UPS Battery</th>
-                  <th>UPS Battery Remark</th>
-                  <th>DG Status</th>
-                  <th>FCC Probe Shield</th>
-                  <th>Zener Barrier</th>
-                  <th>FCC Earth Voltage</th>
-                  <th>Internet Connectivity</th>
-                  <th>Site Status</th>
-                  <th>Site Offline Remark</th>
-                  <th>RDB VS CMS Status</th>
-                  <th>Interlock Report</th>
-                  <th>FOIR Report Last 5 Days</th>
-                  <th>Your Name</th>
-                  <th>ALL Report Status</th>
-                  <th>IF Any Remark</th>
-                  <th>Audit Status</th>
-                  <th>Attachment</th>
-                  <th>Anydesk OR IP</th>
-                  <th>Password</th>
-                </tr>
-              </thead>`;
+            th = `<thead><tr><th>Date</th><th>Site Code</th><th>Site Name</th><th>State</th><th>DO Office</th><th>Total Tank</th><th>Online Tank</th><th>Offline Tank</th><th>Tank Offline Remark</th><th>Total DU</th><th>Online DU</th><th>Offline DU</th><th>DU Offline Remark</th><th>Motherboard Make</th><th>Motherboard Serial</th><th>UPS Status</th><th>UPS Remark</th><th>UPS Battery</th><th>UPS Battery Remark</th><th>DG Status</th><th>FCC Probe Shield</th><th>Zener Barrier</th><th>FCC Earth Voltage</th><th>Internet Connectivity</th><th>Site Status</th><th>Site Offline Remark</th><th>RDB VS CMS Status</th><th>Interlock Report</th><th>FOIR Report Last 5 Days</th><th>Your Name</th><th>ALL Report Status</th><th>IF Any Remark</th><th>Audit Status</th><th>Attachment</th><th>Anydesk OR IP</th><th>Password</th></tr></thead>`;
             tdRange = [...Array(36).keys()];
             break;
           default:
-            th = ''; // Handle invalid role
+            th = '';
             tdRange = [];
         }
 
@@ -166,7 +66,6 @@ function loadRegion(region) {
           cur.forEach((e, i) => {
             if (tdRange.includes(i)) {
               if (i === 0) {
-                // Format the date string to 'dd-mm-yyyy hh:mm:ss'
                 const date = new Date(e);
                 const day = String(date.getDate()).padStart(2, '0');
                 const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -176,7 +75,7 @@ function loadRegion(region) {
                 const seconds = String(date.getSeconds()).padStart(2, '0');
                 const formattedDate = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
                 td.push(`<td>${formattedDate}</td>`);
-              } else if (i === 33 && (localStorage.getItem('role') == 'SL'|| localStorage.getItem('role') == 'FE' )) {
+              } else if (i === 33 && (localStorage.getItem('role') == 'SL' || localStorage.getItem('role') == 'FE')) {
                 const imgLink = e ? `<a href="${e}" target="_blank">View</a>` : '';
                 td.push(`<td>${imgLink}</td>`);
               } else {
@@ -184,23 +83,114 @@ function loadRegion(region) {
               }
             }
           });
-          let tr1 = `<tr>${td.join('')}</tr>`;
-          tr.push(tr1);
+          tr.push(`<tr>${td.join('')}</tr>`);
         });
 
         document.getElementById('mytable').innerHTML = `${th}<tbody>${tr.join('')}</tbody>`;
         roDataArr = sitedata.content2;
-
         filterTable();
       }
     });
 }
 
+function downloadMasterExcel() {
+  if (typeof XLSX === 'undefined') {
+    alert('Excel library not loaded. Please check your connection.');
+    return;
+  }
 
+  const masterURL = 'https://script.google.com/macros/s/AKfycbwbSYIkrxgipZEgWhlbdevdtEnyXrXm6pNvAGlirXtEe46omi3I3VxLnsFK4biJ2cgotw/exec';
+  
+  document.getElementById('loader').classList.remove('hidden');
+  
+  fetch(masterURL)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      document.getElementById('loader').classList.add('hidden');
+      
+      if (!data || !data.content || data.content.length <= 1) {
+        alert('No data available for Master region.');
+        return;
+      }
 
+      const role = localStorage.getItem('role') || 'admin';
+      let header, tdRange;
 
+      switch (role) {
+        case 'FE':
+          header = ['Date', 'Site Code', 'Site Name', 'State', 'DO Office', 'Your Name', 'Audit Status', 'Attachment'];
+          tdRange = [0, 1, 2, 3, 4, 29, 32, 33];
+          break;
+        case 'SL':
+          header = ['Date', 'Site Code', 'Site Name', 'State', 'DO Office', 'Total Tank', 'Online Tank', 'Offline Tank', 'Tank Offline Remark',
+            'Total DU', 'Online DU', 'Offline DU', 'DU Offline Remark', 'Motherboard Make', 'Motherboard Serial', 'UPS Status', 'UPS Remark',
+            'UPS Battery', 'UPS Battery Remark', 'DG Status', 'FCC Probe Shield', 'Zener Barrier', 'FCC Earth Voltage', 'Internet Connectivity',
+            'Site Status', 'Site Offline Remark', 'RDB VS CMS Status', 'Interlock Report', 'FOIR Report Last 5 Days', 'Your Name',
+            'ALL Report Status', 'IF Any Remark', 'Audit Status', 'Attachment'];
+          tdRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
+          break;
+        case 'admin':
+          header = ['Date', 'Site Code', 'Site Name', 'State', 'DO Office', 'Total Tank', 'Online Tank', 'Offline Tank', 'Tank Offline Remark',
+            'Total DU', 'Online DU', 'Offline DU', 'DU Offline Remark', 'Motherboard Make', 'Motherboard Serial', 'UPS Status', 'UPS Remark',
+            'UPS Battery', 'UPS Battery Remark', 'DG Status', 'FCC Probe Shield', 'Zener Barrier', 'FCC Earth Voltage', 'Internet Connectivity',
+            'Site Status', 'Site Offline Remark', 'RDB VS CMS Status', 'Interlock Report', 'FOIR Report Last 5 Days', 'Your Name',
+            'ALL Report Status', 'IF Any Remark', 'Audit Status', 'Attachment', 'Anydesk OR IP', 'Password'];
+          tdRange = [...Array(36).keys()];
+          break;
+        default:
+          header = ['Date', 'Site Code', 'Site Name', 'State', 'DO Office'];
+          tdRange = [0, 1, 2, 3, 4];
+      }
 
+      // Sort data by date (A column) in descending order (latest first)
+      const sortedContent = data.content.slice(1).sort((a, b) => new Date(b[0]) - new Date(a[0]));
 
+      const dataArray = [header];
+      sortedContent.forEach(row => {
+        const rowData = [];
+        row.forEach((cell, i) => {
+          if (tdRange.includes(i)) {
+            if (i === 0) { // A column (Date)
+              let formattedDate = cell;
+              try {
+                const date = new Date(cell);
+                if (!isNaN(date)) {
+                  const day = String(date.getDate()).padStart(2, '0');
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const year = date.getFullYear();
+                  const hours = String(date.getHours()).padStart(2, '0');
+                  const minutes = String(date.getMinutes()).padStart(2, '0');
+                  const seconds = String(date.getSeconds()).padStart(2, '0');
+                  formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+                }
+              } catch (e) {
+                console.warn('Invalid date:', cell);
+              }
+              rowData.push(formattedDate);
+            } else {
+              rowData.push(cell);
+            }
+          }
+        });
+        dataArray.push(rowData);
+      });
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(dataArray);
+      XLSX.utils.book_append_sheet(wb, ws, 'Master');
+      XLSX.writeFile(wb, 'IOCL_Master_Data.xlsx');
+    })
+    .catch(error => {
+      document.getElementById('loader').classList.add('hidden');
+      console.error('Fetch error:', error);
+      alert('Error fetching Master data: ' + error.message + '. Check console for details.');
+    });
+}
 
 function filterTable() {
   let filter = document.getElementById('searchInput').value.toUpperCase();
@@ -240,8 +230,6 @@ function filterTable() {
     }
   }
 }
-
-
 
 
 function downloadTable() {
