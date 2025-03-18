@@ -25,10 +25,10 @@ let isLoading = false;
           
             case 'master':
             currentRegionURL = 'https://script.google.com/macros/s/AKfycbyYwaAi5EtFH79vLyXo-OXe10e74h2iTPQy1XbfZvcDrHxlYQ3ZE6dafrGarAk9vq2CPg/exec';
-            break;
-          default:
-
-            currentRegionURL = ''; // Handle invalid region
+            downloadMasterExcel();
+            return;
+            default:
+            currentRegionURL = '';
         }
 
         isLoading = true; // Set the flag to indicate loading
@@ -195,6 +195,105 @@ let isLoading = false;
       }
 
           
+      function downloadMasterExcel() {
+        if (typeof XLSX === 'undefined') {
+          alert('Excel library not loaded. Please check your connection.');
+          return;
+        }
+      
+        const masterURL = 'https://script.google.com/macros/s/AKfycbyYwaAi5EtFH79vLyXo-OXe10e74h2iTPQy1XbfZvcDrHxlYQ3ZE6dafrGarAk9vq2CPg/exec';
+        
+        document.getElementById('loader').classList.remove('hidden');
+        
+        fetch(masterURL)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            document.getElementById('loader').classList.add('hidden');
+            
+            if (!data || !data.content || data.content.length <= 1) {
+              alert('No data available for Master region.');
+              return;
+            }
+      
+            const role = localStorage.getItem('role') || 'admin';
+            let header, tdRange;
+      
+            switch (role) {
+              case 'FE':
+                header = ['Date', 'Ro Code', 'RO Name', 'State', 'Regional Office','Your Name', 'Audit Status', 'Attachment'];
+                tdRange = [0, 1, 2, 3, 4, 29, 32, 33];
+                break;
+              case 'SL':
+                header = ['Date', 'Ro Code', 'RO Name', 'State', 'Regional Office', 'Total Tank', 'Online Tank', 'Offline Tank', 
+                  'Tank Offline Remark', 'Total DU', 'Online DU', 'Offline DU', 'DU Offline Remark', 'Motherboard Make','Motherboard Serial', 'UPS Status', 'UPS Remark', 
+                  'UPS Battery Status', 'UPS Battery Remark', 'DG Status', 'FCC Probe Shield','Zener Barrier','FCC Earth Voltage', 
+                  'HOS Connectivety', 'HOS Status', 'Site Offline Remark', 'Interlock report', 'FOIR Report Last 5 days', 'ALL Report Status',
+                   'Your Name', 'Remark', 'Audit Status', 'Attachment'];
+                tdRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
+                break;
+              case 'admin':
+                header = ['Date', 'Ro Code', 'RO Name', 'State', 'Regional Office', 'Total Tank', 'Online Tank', 'Offline Tank', 'Tank Offline Remark',
+                  'Total DU', 'Online DU', 'Offline DU', 'DU Offline Remark',  'Motherboard Make','Motherboard Serial','UPS Status', 'UPS Remark', 'UPS Battery Status', 'UPS Battery Remark', 
+                  'DG Status', 'FCC Probe Shield','Zener Barrier','FCC Earth Voltage', 'HOS Connectivety', 'HOS Status', 'Site Offline Remark', 
+                  'Interlock report', 'FOIR Report Last 5 days', 'ALL Report Status', 'Your Name', 'Remark', 'Audit Status', 'Attachment',
+                  'Anydesk OR IP','Password'];
+                tdRange = [...Array(36).keys()];
+                break;
+              default:
+                header = ['Date', 'Site Code', 'Site Name', 'State', 'DO Office'];
+                tdRange = [0, 1, 2, 3, 4];
+            }
+      
+            // Sort data by date (A column) in descending order (latest first)
+            const sortedContent = data.content.slice(1).sort((a, b) => new Date(b[0]) - new Date(a[0]));
+      
+            const dataArray = [header];
+            sortedContent.forEach(row => {
+              const rowData = [];
+              row.forEach((cell, i) => {
+                if (tdRange.includes(i)) {
+                  if (i === 0) { // A column (Date)
+                    let formattedDate = cell;
+                    try {
+                      const date = new Date(cell);
+                      if (!isNaN(date)) {
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        const seconds = String(date.getSeconds()).padStart(2, '0');
+                        formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+                      }
+                    } catch (e) {
+                      console.warn('Invalid date:', cell);
+                    }
+                    rowData.push(formattedDate);
+                  } else {
+                    rowData.push(cell);
+                  }
+                }
+              });
+              dataArray.push(rowData);
+            });
+      
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dataArray);
+            XLSX.utils.book_append_sheet(wb, ws, 'HPCL');
+            XLSX.writeFile(wb, 'HPCL_Master_Data.xlsx');
+          })
+          .catch(error => {
+            document.getElementById('loader').classList.add('hidden');
+            console.error('Fetch error:', error);
+            alert('Error fetching Master data: ' + error.message + '. Check console for details.');
+          });
+      }
+
 
 
 function filterTable() {
@@ -238,7 +337,7 @@ function filterTable() {
 
 
 function downloadTable() {
-  const wb = XLSX.utils.book_new(); // create new workbook
+  const wb = XLSX.utils.book_new(); // create new workbook 
   const sheetName = 'HPCL'; // set sheet name
   let header, tdRange;
 
