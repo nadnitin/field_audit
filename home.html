@@ -1,272 +1,260 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-  <script class="u-script" type="text/javascript" src="login.js" defer=""></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Atos ALL</title>
-  <script>
-    function loadPage(page, dropdown) {
-    // Reset the other dropdowns to default value
-    var otherDropdown1 = dropdown === 'button1-dropdown' ? 'button2-dropdown' : 'button1-dropdown';
-    var otherDropdown2 = dropdown === 'button1-dropdown' ? 'button3-dropdown' : 'button1-dropdown';
-    var otherDropdown3 = dropdown === 'button1-dropdown' ? 'button1-dropdown' : 'button1-dropdown';
 
-    document.getElementById(otherDropdown1).selectedIndex = 0;
-    document.getElementById(otherDropdown2).selectedIndex = 0;
-    document.getElementById(otherDropdown3).selectedIndex = 0;
+  <script class="u-script" type="text/javascript" src="login.js" defer></script>
 
-    // Load the new page
-    document.getElementById("iframe").src = page;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  </script>
- <style>
- 
-  /* Reset default styles */
-* {
-  box-sizing: border-box;
-  margin: auto;
-  padding: auto;
-}
+    body {
+      font-family: Arial, sans-serif;
+    }
 
-/* Navigation Styles */
-nav {
-  background-color: #3c8dbc;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 0px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
+    nav {
+      background-color: #3c8dbc;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
 
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-}
+    nav ul {
+      list-style-type: none;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      align-items: center;
+    }
 
-nav li {
-  margin-right: 20px;
-  position: relative;
-}
+    .user-section {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
 
-nav li a {
-  color: #ffffff; 
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 5px;
-    font-size: 16px;
-  font-weight: bold;
-  border: solid rgb(32, 8, 8);
-}
+    nav li {
+      margin: 5px;
+    }
 
-nav li a:hover {
-  background-color: rgb(150, 224, 30);
-}
+    nav li a, select {
+      display: block;
+      color: #fff;
+      background-color: #0f4d66;
+      border: 1px solid #222;
+      border-radius: 5px;
+      padding: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      align-items: center;
+    }
 
-/* Select Dropdown Styles */
-select {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  background-color: #3c8dbc;
-  color: #fafafa;
-  font-size: 16px;
-  font-weight: bold;
-  appearance: none;
-  background-repeat: no-repeat;
-  background-size: 20px 30px;
-  
-}
+    nav li a:hover {
+      background-color: #96e01e;
+    }
 
-/* Logout Link Styles */
-.log {
-  color: #fff;
-  text-decoration: none;
-  padding: 10px;
-  position: absolute;
-  right : 60px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  background-color: #f0763d;
-}
+    .log {
+      background-color: #f0763d;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
 
-.log:hover {
-  background-color: rgba(180, 99, 6, 0.911);
-}
+    .log:hover {
+      background-color: rgba(180, 99, 6, 0.911);
+    }
 
-/* Username Styles */ 
-.user {
-  color: #fffcfc;
-  padding: 10px;
-  font-size: 16px;
-  position: absolute;
-  right :200px
-}
+    .user {
+      color: #fff;
+      padding: 10px 20px;
+      background-color: #d85d37;
+      border-radius: 5px;
+    }
 
-iframe {
-  width: 100vw;
-  height: 100vh; /* Adjust height as per your requirement */
-  border: none; /* Remove border */
-}
-@media screen and (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: stretch;
-  }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 70px);
+      border: none;
+    }
 
-  nav li {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
+    select option[value=""] {
+      display: block; /* Show default options in dropdown */
+    }
 
-  .log {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
-  .user {
-    margin-left: 0;
-    margin-top: 10px;
-    text-align: center;
-  }
-}
-</style>
-
-  
-  
+    @media screen and (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+      }
+      .user-section {
+        position: static;
+        justify-content: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .log {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+  </style>
 </head>
 
 <body onload="hide()">
   <nav>
     <ul>
       <li>
-        <select id="button1-dropdown" onchange="loadPage(this.value, 'button2-dropdown')"
-          onchange="loadPage(this.value)">
-          <option value="" selected>Field Audit Form ⬇️ </option>
+        <select id="button1-dropdown" onchange="loadPage(this.value, 'button2-dropdown'); this.selectedIndex = 0;">
+          <option value="" selected>Field Audit Form ⬇️</option>
           <option value="IOCL/index.html">IOCL</option>
           <option value="HPCL/index.html">HPCL</option>
           <option value="NAYARA/index.html">NAYARA</option>
         </select>
       </li>
       <li>
-        <select id="button2-dropdown" onchange="loadPage(this.value, 'button1-dropdown')"
-          onchange="loadPage(this.value)">
-          <option value="">Download Audit ⬇️</option>
+        <select id="button2-dropdown" onchange="loadPage(this.value, 'button2-dropdown'); this.selectedIndex = 0;">
+          <option value="" selected>Download Audit ⬇️</option>
           <option value="IOCL/download.html">IOCL</option>
           <option value="HPCL/download.html">HPCL</option>
           <option value="NAYARA/download.html">NAYARA</option>
         </select>
       </li>
       <li>
-        <select id="button3-dropdown" onchange="loadPage(this.value, 'button3-dropdown')"
-          onchange="loadPage(this.value)">
-          <option value="">Old Audit ⬇️</option>
+        <select id="button3-dropdown" onchange="loadPage(this.value, 'button3-dropdown'); this.selectedIndex = 0;">
+          <option value="" selected>Old Audit ⬇️</option>
           <option value="IOCL/Previous.html">IOCL</option>
           <option value="HPCL/Previous.html">HPCL</option>
           <option value="NAYARA/Previous.html">NAYARA</option>
         </select>
       </li>
       <li><a id="add_outlet" onclick="loadPage('Add_outlet/ADD_Site.html')">Add outlet</a></li>
-      <li><a id = "vertual_id" onclick="loadPage('Virtual_id/home.html')"> Virtual ID</a></li>
-      <li><a onclick="loadPage('Atos_help/help.html')"> Atos Help</a></li>
+      <li><a id="vertual_id" onclick="loadPage('Virtual_id/home.html')">Virtual ID</a></li>
+      <li><a onclick="loadPage('Atos_help/help.html')">Atos Help</a></li>
       <li><a id="user_master" href="https://script.google.com/macros/s/AKfycbxt-_SmtG7TsIr00RP_bmNVTUj2hrpW7dOEyIn7PIX3jtqXQmfIMKfjPkyAKk6lTqfPWA/exec" target="_blank">User Master</a></li>
-
-      <a id="username"class="user" > User ID </a>
-      <a class="log"  onclick="logout()">Log Out</a>
     </ul>
+
+    <div class="user-section">
+      <span id="username" class="user">User ID</span>
+      <a class="log" onclick="logout()">Log Out</a>
+    </div>
   </nav>
+
   <iframe class="iframe" id="iframe" src=""></iframe>
-</body>
-</html>
-<script>
+
+  <script>
+    function loadPage(page, dropdown) {
+      document.getElementById("iframe").src = page;
+    }
+
+    function hide() {
+      const role = localStorage.getItem('role');
+      const elements = ['vertual_id', 'add_outlet', 'button3-dropdown', 'user_master'];
+      elements.forEach(id => {
+        document.getElementById(id).style.display =
+          role === 'admin' ? 'block' : 'none';
+      });
+
+      const username = localStorage.getItem("username");
+      if (username) {
+        document.getElementById("username").innerHTML = "User ID: " + username;
+      }
+    }
+
+    function disableRightClick(event) {
+      event.preventDefault();
+    }
 
 
+  
 
+// Reset localStorage on browser close/reopen
+(function resetLocalStorageOnBrowserClose() {
+  const sessionKey = 'sessionActive';
+  const currentSession = sessionStorage.getItem(sessionKey);
 
+  if (!currentSession) {
+    // Browser was closed and reopened, reset localStorage
+    localStorage.setItem("name", "logout");
+    localStorage.setItem("state", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("account_status", "");
+    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
+  }
+})();
+
+// Login check logic
 var nitin = localStorage.getItem("name");
 
-
-  if (nitin == "secrate") {
+if (nitin === "secrate") {
+  // Stay on page if "secrate" is valid
+} else {
+  window.location.replace("../index.html"); // Redirect to index if not valid
   
-  } else {
-   ;
-    window.location.href = "index.html";
-  }
-  
-  
-    if (localStorage.getItem('name') === 'logout') {
-      
-      window.location.href = 'index.html';
-    } else {
-      
-      var sessionTimeout = setTimeout(function () {
-        
-        localStorage.setItem("name","logout");
-      localStorage.setItem("state","");
-      localStorage.setItem("role","");
-      localStorage.setItem("username","");
-      localStorage.setItem("account_status","");
-        
-        window.location.href = 'index.html';
-      }, 1800000); 
-  
-      // Reset session timeout on user activity
-      window.addEventListener('mousemove', function () {
-        clearTimeout(sessionTimeout);
-        sessionTimeout = setTimeout(function () {
-          
-          localStorage.setItem("name","logout");
-      localStorage.setItem("state","");
-      localStorage.setItem("role","");
-      localStorage.setItem("username","");
-      localStorage.setItem("account_status","");;
-          
-          window.location.href = 'index.html';
-        }, 1800000); 
-      });
-    }
-    var username = localStorage.getItem("username");
-    document.getElementById("username").innerHTML = "User: " + username;
-
-    
-    function hide() {
-  const role = localStorage.getItem('role');
-  var downloadButton = document.getElementById('vertual_id');
-  var master = document.getElementById('add_outlet');
-  var old = document.getElementById('button3-dropdown');
-  var user_master = document.getElementById('user_master');
-  if (role =='admin') {
-    downloadButton.style.display = 'show';
-    master.style.display='show';
-    old.style.display='show';
-    user_master.style.display='show';
-  }
-  else if (role =='SL') {
-    downloadButton.style.display = 'none';
-    master.style.display='none';
-    user_master.style.display='none';
-    
-  }
-  else{ downloadButton.style.display = 'none';
-  master.style.display='none';
-  old.style.display='none';
-  user_master.style.display='none';
-  }
-}
-function disableRightClick(event) {
-  event.preventDefault(); // Prevent default right-click behavior
 }
 
-// Add event listener to the document for the contextmenu event (right-click)
-document.addEventListener('contextmenu', disableRightClick);       
+// Logout or timeout logic
+if (localStorage.getItem('name') === 'logout') {
+  window.location.replace('../index.html'); // Redirect to index if logged out
+} else {
+  // Set username to input field if it exists
+  const username = localStorage.getItem('username');
+  if (username && document.getElementById('audit_conducted_person_name')) {
+    document.getElementById('audit_conducted_person_name').value = username;
+  }
+
+  // Session timeout logic (30 minutes)
+  var sessionTimeout = setTimeout(function () {
+    localStorage.setItem("name", "logout");
+    localStorage.setItem("state", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("account_status", "");
+    window.location.replace('../index.html');
+    
+  }, 1800000); // 1800000 ms = 30 minutes
 
 
-  
-  </script>
+  // Reset timeout on user activity
+  window.addEventListener('mousemove', function () {
+    clearTimeout(sessionTimeout);
+    sessionTimeout = setTimeout(function () {
+      localStorage.setItem("name", "logout");
+      localStorage.setItem("state", "");
+      localStorage.setItem("role", "");
+      localStorage.setItem("username", "");
+      localStorage.setItem("account_status", "");
+      window.location.replace('../index.html');
+      
+    }, 1800000);
+  });
+}
+
+// Retrieve the value from localStorage
+const username = localStorage.getItem('username');
+
+// Check if username exists in localStorage and set it to the input field
+if (username) {
+  document.getElementById('audit_conducted_person_name').value = username;
+}
+
+   </script>
+</body>
+</html>
