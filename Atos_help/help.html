@@ -211,37 +211,87 @@ function activateSpinner() {
         }
 
 
-        var nitin = localStorage.getItem("name");
-  var role = localStorage.getItem("role");
+      
+// Retrieve the value from localStorage
+const username = localStorage.getItem('username');
 
-  // Check if the user has the correct credentials
-  if (nitin === "secrate" && (role === "SP" || role === "admin" || role === "SL")) {
-    // User has correct credentials, do nothing
+// Check if username exists in localStorage and set it to the input field
+if (username) {
+  document.getElementById('audit_conducted_person_name').value = username;
+}
+
+
+function reloadHomePage() {
+  if (window.top !== window.self) {
+    window.top.location.href = "../home.html"; // Reload in main window if in iframe
   } else {
-    // Redirect to index.html if the user doesn't have the correct credentials
-    window.location.href = "../Error.html";
+    window.location.href = "../home.html"; // Reload directly if in main window
+  }
+}
+
+// Reset localStorage on browser close/reopen
+(function resetLocalStorageOnBrowserClose() {
+  const sessionKey = 'sessionActive';
+  const currentSession = sessionStorage.getItem(sessionKey);
+
+  if (!currentSession) {
+    // Browser was closed and reopened, reset localStorage
+    localStorage.setItem("name", "logout");
+    localStorage.setItem("state", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("account_status", "");
+    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
+  }
+})();
+
+// Login check logic
+var nitin = localStorage.getItem("name");
+
+if (nitin === "secrate") {
+  // Stay on page if "secrate" is valid
+} else {
+  window.location.replace("../index.html"); // Redirect to index if not valid
+  reloadHomePage();
+}
+
+// Logout or timeout logic
+if (localStorage.getItem('name') === 'logout') {
+  window.location.replace('../index.html'); // Redirect to index if logged out
+} else {
+  // Set username to input field if it exists
+  const username = localStorage.getItem('username');
+  if (username && document.getElementById('audit_conducted_person_name')) {
+    document.getElementById('audit_conducted_person_name').value = username;
   }
 
-  // Check if session has timed out
-  if (localStorage.getItem('name') === 'logout') {
-    // Redirect to index.html if session has timed out
-    window.location.href = '../index.html';
-  } else {
-    var sessionTimeout = setTimeout(function() {
-      // Set 'logout' in localStorage and redirect to index.html after timeout
-      localStorage.setItem('name', 'logout');
-      window.location.href = '../index.html';
-    }, 1800000); // Timeout after 1800000 milliseconds (30 minutes)
+  // Session timeout logic (30 minutes)
+  var sessionTimeout = setTimeout(function () {
+    localStorage.setItem("name", "logout");
+    localStorage.setItem("state", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("account_status", "");
+    window.location.replace('../index.html');
+    reloadHomePage();
+  }, 1800000); // 1800000 ms = 30 minutes
 
-    // Reset session timeout on user activity
-    window.addEventListener('mousemove', function() {
-      clearTimeout(sessionTimeout);
-      sessionTimeout = setTimeout(function() {
-        localStorage.setItem('name', 'logout');
-        window.location.href = '../index.html';
-      }, 1800000);
-    });
-  }
+
+  // Reset timeout on user activity
+  window.addEventListener('mousemove', function () {
+    clearTimeout(sessionTimeout);
+    sessionTimeout = setTimeout(function () {
+      localStorage.setItem("name", "logout");
+      localStorage.setItem("state", "");
+      localStorage.setItem("role", "");
+      localStorage.setItem("username", "");
+      localStorage.setItem("account_status", "");
+      window.location.replace('../index.html');
+      reloadHomePage()
+    }, 1800000);
+  });
+}
+
 
     </script>
 </body>
