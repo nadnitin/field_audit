@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload and Data Fetch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .upload-container, .fetch-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        input[type="file"], input[type="text"] {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 18px);
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status, .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .result {
+            background: #e9ecef;
+            color: #212529;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+        <!-- IOCL Fetch -->
+        <div class="fetch-container">
+            <h2>GET IOCL Data</h2>
+            <input type="text" id="ioclRoCode" placeholder="Enter IOCL RO Code">
+            <button onclick="fetchData('iocl')">Fetch Data</button>
+            <div id="ioclResult" class="result"></div>
+        </div>
+
+        <!-- Nayara Fetch -->
+        <div class="fetch-container">
+            <h2>GET Nayara Data</h2>
+            <input type="text" id="nayaraRoCode" placeholder="Enter Nayara RO Code">
+            <button onclick="fetchData('nayara')">Fetch Data</button>
+            <div id="nayaraResult" class="result"></div>
+        </div>
+
+        <!-- HPCL Fetch -->
+        <div class="fetch-container">
+            <h2>GET HPCL Data</h2>
+            <div class="input-group">
+                <input type="text" id="hpclRoCode" placeholder="Enter HPCL RO Code">
+                <input type="text" id="hpclSapCode" placeholder="Enter HPCL Sap Code">
+            </div>
+            <button onclick="fetchData('hpcl')">Fetch Data</button>
+            <div id="hpclResult" class="result"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- IOCL Upload -->
+        <div class="upload-container">
+            <h2>IOCL Upload</h2>
+            <input type="file" id="ioclFile" accept=".xlsx">
+            <button onclick="uploadFile('iocl')">Upload IOCL RO</button>
+            <div id="ioclStatus" class="status"></div>
+        </div>
+
+        <!-- Nayara Upload -->
+        <div class="upload-container">
+            <h2>Nayara Upload</h2>
+            <input type="file" id="nayaraFile" accept=".xlsx">
+            <button onclick="uploadFile('nayara')">Upload Nayara RO</button>
+            <div id="nayaraStatus" class="status"></div>
+        </div>
+
+        <!-- HPCL Upload -->
+        <div class="upload-container">
+            <h2>HPCL Upload</h2>
+            <input type="file" id="hpclFile" accept=".xlsx">
+            <button onclick="uploadFile('hpcl')">Upload HPCL RO</button>
+            <div id="hpclStatus" class="status"></div>
+        </div>
+
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyv1k8HObP0cYhNA5IgM_GOnMfE3jKKaGzBQp9NfYtbfv_Q-nZIuLXrSty_HjL5r5jiKw/exec';
+
+        async function uploadFile(type) {
+            const fileInput = document.getElementById(type === 'iocl' ? 'ioclFile' : type === 'nayara' ? 'nayaraFile' : 'hpclFile');
+            const statusDiv = document.getElementById(type === 'iocl' ? 'ioclStatus' : type === 'nayara' ? 'nayaraStatus' : 'hpclStatus');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                statusDiv.textContent = 'Please select a file first!';
+                statusDiv.className = 'status error';
+                return;
+            }
+
+            statusDiv.textContent = 'Converting to CSV...';
+            statusDiv.className = 'status';
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const csvData = XLSX.utils.sheet_to_csv(firstSheet);
+
+                    statusDiv.textContent = 'Uploading...';
+
+                    const formData = new FormData();
+                    formData.append('csvData', csvData);
+                    formData.append('type', type);
+
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        body: formData,
+                        redirect: 'follow'
+                    });
+
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        statusDiv.textContent = 'File uploaded successfully!';
+                        statusDiv.className = 'status success';
+                        fileInput.value = '';
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    statusDiv.textContent = `Error: ${error.message}`;
+                    statusDiv.className = 'status error';
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function fetchData(type) {
+            const resultDiv = document.getElementById(type === 'iocl' ? 'ioclResult' : type === 'nayara' ? 'nayaraResult' : 'hpclResult');
+            let url;
+
+            if (type === 'hpcl') {
+                const roCode = document.getElementById('hpclRoCode').value.trim();
+                const sapCode = document.getElementById('hpclSapCode').value.trim();
+                if (!roCode && !sapCode) {
+                    resultDiv.textContent = 'Please enter at least one code (RO Code or Sap Code)!';
+                    resultDiv.className = 'result error';
+                    return;
+                }
+                url = `${API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}&sapCode=${encodeURIComponent(sapCode)}`;
+            } else {
+                const roCodeInput = document.getElementById(type === 'iocl' ? 'ioclRoCode' : 'nayaraRoCode');
+                const roCode = roCodeInput.value.trim();
+                if (!roCode) {
+                    resultDiv.textContent = 'Please enter an RO Code!';
+                    resultDiv.className = 'result error';
+                    return;
+                }
+                url = `${API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}`;
+            }
+
+            resultDiv.textContent = 'Fetching data...';
+            resultDiv.className = 'result';
+
+            try {
+                const response = await fetch(url, { method: 'GET' });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    if (type === 'iocl') {
+                        resultDiv.innerHTML = `
+                            <strong>RO Code:</strong> ${result.data.roCode}<br>
+                            <strong>RO Name:</strong> ${result.data.roName}<br>
+                            <strong>State:</strong> ${result.data.state}<br>
+                            <strong>Divisional Office:</strong> ${result.data.divisionalOffice}
+                        `;
+                    } else if (type === 'nayara') {
+                        resultDiv.innerHTML = `
+                            <strong>RO Code:</strong> ${result.data.roCode}<br>
+                            <strong>RO Name:</strong> ${result.data.roName}<br>
+                            <strong>Location:</strong> ${result.data.location}
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <strong>RO Code:</strong> ${result.data.roCode}<br>
+                            <strong>Sap Code:</strong> ${result.data.sapCode}<br>
+                            <strong>RO Name:</strong> ${result.data.roName}<br>
+                            <strong>Region:</strong> ${result.data.region}
+                        `;
+                    }
+                    resultDiv.className = 'result';
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>
