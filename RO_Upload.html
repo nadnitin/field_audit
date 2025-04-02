@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>File Upload and Data Fetch</title>
+    <title>File Upload</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         body {
@@ -18,7 +18,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .upload-container, .fetch-container {
+        .upload-container {
             margin: 20px 0;
             padding: 20px;
             border: 1px solid #ddd;
@@ -29,7 +29,7 @@
             color: #333;
             margin-top: 0;
         }
-        input[type="file"], input[type="text"] {
+        input[type="file"] {
             padding: 8px;
             margin: 5px 0;
             border: 1px solid #ccc;
@@ -48,7 +48,7 @@
         button:hover {
             background-color: #0056b3;
         }
-        .status, .result {
+        .status {
             margin-top: 10px;
             padding: 10px;
             border-radius: 4px;
@@ -61,46 +61,9 @@
             background: #f8d7da;
             color: #721c24;
         }
-        .result {
-            background: #e9ecef;
-            color: #212529;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
     </style>
 </head>
 <body>
-    
-        <!-- IOCL Fetch -->
-        <div class="fetch-container">
-            <h2>GET IOCL Data</h2>
-            <input type="text" id="ioclRoCode" placeholder="Enter IOCL RO Code">
-            <button onclick="fetchData('iocl')">Fetch Data</button>
-            <div id="ioclResult" class="result"></div>
-        </div>
-
-        <!-- Nayara Fetch -->
-        <div class="fetch-container">
-            <h2>GET Nayara Data</h2>
-            <input type="text" id="nayaraRoCode" placeholder="Enter Nayara RO Code">
-            <button onclick="fetchData('nayara')">Fetch Data</button>
-            <div id="nayaraResult" class="result"></div>
-        </div>
-
-        <!-- HPCL Fetch -->
-        <div class="fetch-container">
-            <h2>GET HPCL Data</h2>
-            <div class="input-group">
-                <input type="text" id="hpclRoCode" placeholder="Enter HPCL RO Code">
-                <input type="text" id="hpclSapCode" placeholder="Enter HPCL Sap Code">
-            </div>
-            <button onclick="fetchData('hpcl')">Fetch Data</button>
-            <div id="hpclResult" class="result"></div>
-        </div>
-    </div>
-
     <div class="container">
         <!-- IOCL Upload -->
         <div class="upload-container">
@@ -125,7 +88,7 @@
             <button onclick="uploadFile('hpcl')">Upload HPCL RO</button>
             <div id="hpclStatus" class="status"></div>
         </div>
-
+    </div>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyv1k8HObP0cYhNA5IgM_GOnMfE3jKKaGzBQp9NfYtbfv_Q-nZIuLXrSty_HjL5r5jiKw/exec';
@@ -178,69 +141,6 @@
                 }
             };
             reader.readAsArrayBuffer(file);
-        }
-
-        async function fetchData(type) {
-            const resultDiv = document.getElementById(type === 'iocl' ? 'ioclResult' : type === 'nayara' ? 'nayaraResult' : 'hpclResult');
-            let url;
-
-            if (type === 'hpcl') {
-                const roCode = document.getElementById('hpclRoCode').value.trim();
-                const sapCode = document.getElementById('hpclSapCode').value.trim();
-                if (!roCode && !sapCode) {
-                    resultDiv.textContent = 'Please enter at least one code (RO Code or Sap Code)!';
-                    resultDiv.className = 'result error';
-                    return;
-                }
-                url = `${API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}&sapCode=${encodeURIComponent(sapCode)}`;
-            } else {
-                const roCodeInput = document.getElementById(type === 'iocl' ? 'ioclRoCode' : 'nayaraRoCode');
-                const roCode = roCodeInput.value.trim();
-                if (!roCode) {
-                    resultDiv.textContent = 'Please enter an RO Code!';
-                    resultDiv.className = 'result error';
-                    return;
-                }
-                url = `${API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}`;
-            }
-
-            resultDiv.textContent = 'Fetching data...';
-            resultDiv.className = 'result';
-
-            try {
-                const response = await fetch(url, { method: 'GET' });
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    if (type === 'iocl') {
-                        resultDiv.innerHTML = `
-                            <strong>RO Code:</strong> ${result.data.roCode}<br>
-                            <strong>RO Name:</strong> ${result.data.roName}<br>
-                            <strong>State:</strong> ${result.data.state}<br>
-                            <strong>Divisional Office:</strong> ${result.data.divisionalOffice}
-                        `;
-                    } else if (type === 'nayara') {
-                        resultDiv.innerHTML = `
-                            <strong>RO Code:</strong> ${result.data.roCode}<br>
-                            <strong>RO Name:</strong> ${result.data.roName}<br>
-                            <strong>Location:</strong> ${result.data.location}
-                        `;
-                    } else {
-                        resultDiv.innerHTML = `
-                            <strong>RO Code:</strong> ${result.data.roCode}<br>
-                            <strong>Sap Code:</strong> ${result.data.sapCode}<br>
-                            <strong>RO Name:</strong> ${result.data.roName}<br>
-                            <strong>Region:</strong> ${result.data.region}
-                        `;
-                    }
-                    resultDiv.className = 'result';
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                resultDiv.textContent = `Error: ${error.message}`;
-                resultDiv.className = 'result error';
-            }
         }
     </script>
 </body>
