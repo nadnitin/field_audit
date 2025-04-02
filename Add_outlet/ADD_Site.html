@@ -2,205 +2,421 @@
 <html lang="en">
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add outlet</title>
-    <link rel="stylesheet" href="add.css" />
-    <script src="add.js"></script>
-    <script src="script.js"></script>
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Outlet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgb(199, 216, 216);
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      background-color: #3c8dbc;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    .result, .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .result {
+      background: #e9ecef;
+      color: #212529;
+    }
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
 </head>
-<script> 
-  // Reset localStorage on browser close/reopen
-(function resetLocalStorageOnBrowserClose() {
-  const sessionKey = 'sessionActive';
-  const currentSession = sessionStorage.getItem(sessionKey);
-
-  if (!currentSession) {
-    // Browser was closed and reopened, clear localStorage
-    localStorage.clear(); // Reset all localStorage keys
-    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
-  }
-})();
-
-// Login check logic
-var nitin = localStorage.getItem("name");
-var role = localStorage.getItem("role");
-
-if (nitin === "secrate" && role === "admin") {
-  // User is authenticated and authorized, allow access to the page
-} else {
-  // User is not authorized, redirect to Error page
-  window.location.href = '../Error.html';
-}
-
-// Check if session has timed out
-if (localStorage.getItem('name') === 'logout') {
-  // Perform logout actions, redirect to index page
-  window.location.href = '../index.html';
-} else {
-  // Set session timeout timer to check for session timeout
-  var sessionTimeout = setTimeout(function() {
-    localStorage.setItem('name', 'logout');
-    window.location.href = '../index.html';
-  }, 1800000); // 30 minutes timeout
-
-  // Reset session timeout on user activity
-  window.addEventListener('mousemove', function() {
-    clearTimeout(sessionTimeout);
-    sessionTimeout = setTimeout(function() {
-      localStorage.setItem('name', 'logout');
-      window.location.href = '../index.html';
-    }, 1800000); // 30 minutes timeout
-  });
-}
-
-// Reload home page function (unchanged)
-function reloadHomePage() {
-  if (window.top !== window.self) {
-    window.top.location.href = "../home.html"; // Reload in main window if in iframe
-  } else {
-    window.location.href = "../home.html"; // Reload directly if in main window
-  }
-}
-  </script>
-  
-	
-
-<body style="background-color: rgb(199, 216, 216);">
-  <header class="header"> IOCL ADD Outlet</header>
-  <div style="text-align: center;">
-   
+<body>
+  <!-- IOCL Section -->
+  <header class="header">IOCL Add Outlet</header>
+  <div class="container">
+    <form id="iocl">
+      <label for="site_code_iocl">Site Code (RO Code):</label>
+      <input type="text" id="site_code_iocl" name="site_code" placeholder="Enter RO Code" onblur="fetchData('iocl')">
+      
+      <label for="site_name_iocl">Site Name (RO Name):</label>
+      <input type="text" id="site_name_iocl" name="site_name" placeholder="RO Name"  required>
+      
+      <label for="state_iocl">State:</label>
+      <select id="state_iocl" name="state" onchange="populateCountriesIocl()" required>
+        <option value="">Select State</option>
+        <option value="Bihar SO">Bihar SO</option>
+        <option value="Tamilnadu SO">Tamilnadu SO</option>
+        <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+        <option value="Punjab &Himachal SO">Punjab &Himachal SO</option>
+        <option value="West Bengal SO">West Bengal SO</option>
+        <option value="Gujarat SO">Gujarat SO</option>
+        <option value="Karnataka SO">Karnataka SO</option>
+        <option value="Delhi & Haryana SO">Delhi & Haryana SO</option>
+        <option value="Uttar Pradesh SO -II">Uttar Pradesh SO -II</option>
+        <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+        <option value="Kerala SO">Kerala SO</option>
+        <option value="Odisha SO">Odisha SO</option>
+        <option value="Rajasthan SO">Rajasthan SO</option>
+        <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+        <option value="TAPSO">TAPSO</option>
+        <option value="Maharashtra SO">Maharashtra SO</option>
+      </select>
+      
+      <label for="division_office_iocl">Divisional Office:</label>
+      <select id="division_office_iocl" name="do_office"></select>
+      
+      <button class="button" id="submit_iocl" type="submit" onclick="saveData(event, 'iocl')">Submit</button>
+      <div id="ioclResult" class="result"></div>
+      <div id="ioclStatus" class="status"></div>
+    </form>
   </div>
-    <div class="container" >
-        <form id="iocl">
 
-    
-          <label for="site_code">Site Code:</label>
-          <input type="text" id="site_code" name="site_code"  placeholder="Site Code">
+  <!-- HPCL Section -->
+  <header class="header">HPCL Add Outlet</header>
+  <div class="container">
+    <form id="hpcl">
+      <div class="input-group">
+        <div style="flex: 1;">
+          <label for="ro_code_hpcl">RO Code:</label>
+          <input type="text" id="ro_code_hpcl" name="ro_code" placeholder="Enter RO Code" onblur="fetchData('hpcl')">
+        </div>
+        <div style="flex: 1;">
+          <label for="sap_code_hpcl">Sap Code:</label>
+          <input type="text" id="sap_code_hpcl" name="sap_code" placeholder="Enter Sap Code" onblur="fetchData('hpcl')">
+        </div>
+      </div>
+      
+      <label for="ro_name_hpcl">RO Name:</label>
+      <input type="text" id="ro_name_hpcl" name="ro_name" placeholder="RO Name"  required>
+      
+      <label for="state_hpcl">State:</label>
+      <select id="state_hpcl" name="state" required>
+        <option value="">Select State</option>
+        <option value="Bihar SO">Bihar SO</option>
+        <option value="Delhi & Haryana SO">Delhi & Haryana SO</option>
+        <option value="Gujarat SO">Gujarat SO</option>
+        <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
+        <option value="Kerala SO">Kerala SO</option>
+        <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
+        <option value="Maharashtra SO">Maharashtra SO</option>
+        <option value="Odisha SO">Odisha SO</option>
+        <option value="Punjab &Himachal SO">Punjab & Himachal SO</option>
+        <option value="Rajasthan SO">Rajasthan SO</option>
+        <option value="Tamilnadu SO">Tamilnadu SO</option>
+        <option value="TAPSO">TAPSO</option>
+        <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
+        <option value="Uttar Pradesh SO-II">Uttar Pradesh SO-II</option>
+        <option value="West Bengal SO">West Bengal SO</option>
+      </select>
+      
+      <button class="button" id="submit_hpcl" type="submit" onclick="saveData(event, 'hpcl')">Submit</button>
+      <div id="hpclResult" class="result"></div>
+      <div id="hpclStatus" class="status"></div>
+    </form>
+  </div>
 
+  <!-- Nayara Section -->
+  <header class="header">Nayara Add Outlet</header>
+  <div class="container">
+    <form id="nayara">
+      <label for="ro_code_nayara">RO Code:</label>
+      <input type="text" id="ro_code_nayara" name="ro_code" placeholder="Enter RO Code" onblur="fetchData('nayara')">
+      
+      <label for="ro_name_nayara">RO Name:</label>
+      <input type="text" id="ro_name_nayara" name="ro_name" placeholder="RO Name"  required>
+      
+      <label for="state_nayara">State:</label>
+      <select id="state_nayara" name="state" required>
+        <option value="">Select State</option>
+        <option value="Andhra Pradesh">Andhra Pradesh</option>
+        <option value="Assam">Assam</option>
+        <option value="Bihar">Bihar</option>
+        <option value="Chhattisgarh">Chhattisgarh</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Haryana">Haryana</option>
+        <option value="Himachal Pradesh">Himachal Pradesh</option>
+        <option value="Jharkhand">Jharkhand</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Kerala">Kerala</option>
+        <option value="Madhya Pradesh">Madhya Pradesh</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Orissa">Orissa</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Rajasthan">Rajasthan</option>
+        <option value="Tamil Nadu">Tamil Nadu</option>
+        <option value="Telangana">Telangana</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Uttarakhand">Uttarakhand</option>
+        <option value="West Bengal">West Bengal</option>
+      </select>
+      
+      <label for="location_nayara">Location:</label>
+      <input type="text" id="location_nayara" name="location" placeholder="Location" readonly>
+      
+      <button class="button" id="submit_nayara" type="submit" onclick="saveData(event, 'nayara')">Submit</button>
+      <div id="nayaraResult" class="result"></div>
+      <div id="nayaraStatus" class="status"></div>
+    </form>
+  </div>
 
-            <label for="site_name">Site Name:</label>
-            <input type="text" id="site_name" name="site_name" placeholder="Site Name"  >
-            <label for="State">State:</label>
-            <select class="select" id="state" name="state" onchange="populateCountriesIocl()" >
-              <option value="">Select state</option>
-              <option value="Bihar SO">Bihar SO</option>
-              <option value="Tamilnadu SO">Tamilnadu SO</option>
-              <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
-              <option value="Punjab &Himachal SO">Punjab &Himachal SO</option>
-              <option value="West Bengal SO">West Bengal SO</option>
-              <option value="Gujarat SO">Gujarat SO</option>
-              <option value="Karnataka SO">Karnataka SO</option>
-              <option value="Delhi & Haryana SO">Delhi & Haryana SO</option>
-              <option value="Uttar Pradesh SO -II">Uttar Pradesh SO -II</option>
-              <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
-              <option value="Kerala SO">Kerala SO</option>
-              <option value="Odisha SO">Odisha SO</option>
-              <option value="Rajasthan SO">Rajasthan SO</option>
-              <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
-              <option value="TAPSO">TAPSO</option>
-              <option value="Maharashtra SO">Maharashtra SO</option>
-            </select>
+  <script>
+    // Reset localStorage on browser close/reopen
+    (function resetLocalStorageOnBrowserClose() {
+      const sessionKey = 'sessionActive';
+      const currentSession = sessionStorage.getItem(sessionKey);
+      if (!currentSession) {
+        localStorage.clear();
+        sessionStorage.setItem(sessionKey, 'true');
+      }
+    })();
 
-            <label for="DO">Divistion Office:</label>
-            <select class="select" id="division_office" name="do_office" placeholder="Divistion Office" ></select>
-            
-          
-            <button class="button" id="submit1" type="submit" onclick="saveDataIOCL()" > Submit</button>
-          </form></div></body>
-         
+    // Login check logic
+    var nitin = localStorage.getItem("name");
+    var role = localStorage.getItem("role");
+    if (nitin !== "secrate" || role !== "admin") {
+      window.location.href = '../Error.html';
+    }
 
-<body>
+    // Session timeout logic
+    if (localStorage.getItem('name') === 'logout') {
+      window.location.href = '../index.html';
+    } else {
+      var sessionTimeout = setTimeout(function() {
+        localStorage.setItem('name', 'logout');
+        window.location.href = '../index.html';
+      }, 1800000); // 30 minutes
 
+      window.addEventListener('mousemove', function() {
+        clearTimeout(sessionTimeout);
+        sessionTimeout = setTimeout(function() {
+          localStorage.setItem('name', 'logout');
+          window.location.href = '../index.html';
+        }, 1800000);
+      });
+    }
 
-  <header class="header"> HPCL ADD Outlet</header>
-    <div class="container">
-        <form id="hpcl">
+    // API URLs
+    const FETCH_API_URL = 'https://script.google.com/macros/s/AKfycbyv1k8HObP0cYhNA5IgM_GOnMfE3jKKaGzBQp9NfYtbfv_Q-nZIuLXrSty_HjL5r5jiKw/exec';
+    const POST_API_URLS = {
+      'iocl': 'https://script.google.com/macros/s/AKfycbxrqf7eUIGoGTJyb8i3lZscFBAENunb_czeBLuDMcPU1Y2YrXmsGKnTl1W3WeubqCaz/exec',
+      'hpcl': 'https://script.google.com/macros/s/AKfycbxeWgGJiKXDadqdnXXqsdx9b4Ojjk6RKWXU5oMQNcP2q37NcIOIyBDo5qOwWnr-F0xRjA/exec',
+      'nayara': 'https://script.google.com/macros/s/AKfycbwA9p-gERcEsl0seZA5iQZGAW5Ua5nVaCuxR0hr0rdFETwb36JcuUDANg_e8payIYYs/exec'
+    };
 
-    
-          <label for="ro_code">RO Code:</label>
-          <input type="text" id="ro_code" name="ro_code" placeholder="RO Code">
+    // Define countries for IOCL
+    var countriesByContinent = {
+      "Bihar SO": ["BEGUSARAI DIV. OFFIC", "Patna DO", "Ranchi Divisional Of", "Dhanbad DO", "MuzaffarpurDO"],
+      "Delhi & Haryana SO": ["Delhi DO", "Panipat DO", "Hissar DO", "Gurgaon DO"],
+      "Gujarat SO": ["Surat DO", "Rajkot DO", "Ahmedabad DO"],
+      "IndianOil-AOD St OFF": ["Guwahati DO", "Tinsukia DO", "Sichar DO", "Imphal DO"],
+      "Karnataka SO": ["Bangalore DO", "Mangalore DO", "Belgaum DO", "Mysore DO", "Bellary DO"],
+      "Kerala SO": ["Thiruvananthpuram DO", "Ernakulam (Kochi) DO", "Kozhikode(CalicutDO)"],
+      "Madhya Pradesh SO": ["Bhopal DO", "Jabalpur DO", "Raipur DO", "Indore DO"],
+      "Maharashtra SO": ["Nagpur DO", "Pune DO", "GOA DO", "Mumbai DO", "AURANGABAD D.O."],
+      "Odisha SO": ["Bhubneswar DO", "Sambalpur DO"],
+      "Punjab &Himachal SO": ["AMRITSAR DO", "SANGRUR DO", "Bhatinda DO", "JALLANDHAR DO (RE)", "Chandigarh DO", "Shimla DO", "Jammu DO"],
+      "Rajasthan SO": ["Jaipur DO", "Jodhpur DO", "AJMER DO", "Udaipur DO"],
+      "Tamilnadu SO": ["Chennai DO", "Trichy DO", "Madurai DO", "Coimbatore DO", "Salem DO"],
+      "TAPSO": ["Secundrabad DO", "Vishakhapatnam DO", "Vijayawada DO", "TIRUPATI DO", "Warangal DO"],
+      "Uttar Pradesh SO": ["Gorakhpur DO", "VARANASI DO", "Allahabad DO", "Kanpur DO", "Lucknow DO"],
+      "Uttar Pradesh SO -II": ["Moradabad DO", "Agra DO", "Dehradun DO", "Bareilley DO", "NOIDA DO"],
+      "West Bengal SO": ["Kolkata DO", "Siliguri DO", "Durgapur DO", "HALDIA DO"]
+    };
 
+    function populateCountriesIocl() {
+      var continentSelect = document.getElementById("state_iocl");
+      var countrySelect = document.getElementById("division_office_iocl");
 
-            <label for="ro_name">RO Name:</label>
-            <input type="text" id="ro_name" name="ro_name" placeholder="RO Name">
+      countrySelect.innerHTML = "<option value=''>Select Divisional Office</option>";
+      
+      var selectedContinent = continentSelect.value;
+      var countries = countriesByContinent[selectedContinent];
+      if (countries) {
+        for (var i = 0; i < countries.length; i++) {
+          var option = document.createElement("option");
+          option.text = countries[i];
+          option.value = countries[i];
+          countrySelect.add(option);
+        }
+      }
+    }
 
-            <label for="State">State:</label>
-            <select class="select" id="State" type="text" name="state" onchange="populateCountriesHpcl()" >
-              <option value="">Select state</option>
-              <option value="Bihar SO">Bihar SO</option>
-              <option value="Delhi & Haryana SO">Delhi &amp; Haryana SO</option>
-              <option value="Gujarat SO">Gujarat SO</option>
-              <option value="IndianOil-AOD St OFF">IndianOil-AOD St OFF</option>
-              <option value="Kerala SO">Kerala SO</option>
-              <option value="Madhya Pradesh SO">Madhya Pradesh SO</option>
-              <option value="Maharashtra SO">Maharashtra SO</option>
-              <option value="Odisha SO">Odisha SO</option>
-              <option value="Punjab &Himachal SO">Punjab &amp; Himachal SO</option>
-              <option value="Rajasthan SO">Rajasthan SO</option>
-              <option value="Tamilnadu SO">Tamilnadu SO</option>
-              <option value="TAPSO">TAPSO</option>
-              <option value="Uttar Pradesh SO">Uttar Pradesh SO</option>
-              <option value="Uttar Pradesh SO-II">Uttar Pradesh SO-II</option>
-              <option value="West Bengal SO">West Bengal SO</option>
-            </select>
+    // Fetch Data Function
+    async function fetchData(type) {
+      const resultDiv = document.getElementById(`${type}Result`);
+      let url;
 
-            <label for="regional_office">Regional Office:</label>
-            <select class="select" id="regional_office" name="regional_office" ></select>
-          
-            <button class="button" onclick="saveDataHpcl()" style="background-color: rgb(54, 79, 215);" type="submit" id="submit2" > Submit</button>
-          </form></div>
-         
-    
-</body>
-<body>
+      if (type === 'hpcl') {
+        const roCode = document.getElementById('ro_code_hpcl')?.value.trim() || '';
+        const sapCode = document.getElementById('sap_code_hpcl')?.value.trim() || '';
+        if (!roCode && !sapCode) {
+          resultDiv.textContent = 'Please enter at least one code (RO Code or Sap Code)!';
+          resultDiv.className = 'result error';
+          return;
+        }
+        url = `${FETCH_API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}&sapCode=${encodeURIComponent(sapCode)}`;
+      } else {
+        const roCode = document.getElementById(type === 'iocl' ? 'site_code_iocl' : 'ro_code_nayara')?.value.trim() || '';
+        if (!roCode) {
+          resultDiv.textContent = 'Please enter an RO Code!';
+          resultDiv.className = 'result error';
+          return;
+        }
+        url = `${FETCH_API_URL}?type=${type}&roCode=${encodeURIComponent(roCode)}`;
+      }
 
+      resultDiv.textContent = 'Fetching data...';
+      resultDiv.className = 'result';
 
-  <header class="header"> Nayara ADD Outlet</header>
-    <div class="container">
-        <form id="Nayara">
+      try {
+        const response = await fetch(url, { method: 'GET' });
+        const result = await response.json();
 
-    
-          <label for="ro_code">RO Code:</label>
-          <input type="text" id="ro_code" name="ro_code" placeholder="RO Code">
+        if (result.status === 'success') {
+          if (type === 'iocl') {
+            document.getElementById('site_name_iocl').value = result.data.roName || '';
+            document.getElementById('state_iocl').value = result.data.state || '';
+            populateCountriesIocl(); // Populate DO based on fetched state
+            document.getElementById('division_office_iocl').value = result.data.divisionalOffice || '';
+            resultDiv.innerHTML = `
+              <strong>RO Code:</strong> ${result.data.roCode}<br>
+              <strong>RO Name:</strong> ${result.data.roName}<br>
+              <strong>State:</strong> ${result.data.state}<br>
+              <strong>Divisional Office:</strong> ${result.data.divisionalOffice}
+            `;
+          } else if (type === 'hpcl') {
+            document.getElementById('ro_name_hpcl').value = result.data.roName || '';
+            document.getElementById('state_hpcl').value = result.data.region || ''; // Assuming 'region' maps to 'state'
+            document.getElementById('ro_code_hpcl').value = result.data.roCode || roCode;
+            document.getElementById('sap_code_hpcl').value = result.data.sapCode || sapCode;
+            resultDiv.innerHTML = `
+              <strong>RO Code:</strong> ${result.data.roCode}<br>
+              <strong>Sap Code:</strong> ${result.data.sapCode}<br>
+              <strong>RO Name:</strong> ${result.data.roName}<br>
+              <strong>Region:</strong> ${result.data.region}
+            `;
+          } else if (type === 'nayara') {
+            document.getElementById('ro_name_nayara').value = result.data.roName || '';
+            document.getElementById('state_nayara').value = result.data.state || '';
+            document.getElementById('location_nayara').value = result.data.location || '';
+            resultDiv.innerHTML = `
+              <strong>RO Code:</strong> ${result.data.roCode}<br>
+              <strong>RO Name:</strong> ${result.data.roName}<br>
+              <strong>State:</strong> ${result.data.state}<br>
+              <strong>Location:</strong> ${result.data.location}
+            `;
+          }
+          resultDiv.className = 'result';
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+        resultDiv.className = 'result error';
+        if (type === 'iocl') {
+          document.getElementById('site_name_iocl').value = '';
+          document.getElementById('state_iocl').value = '';
+          document.getElementById('division_office_iocl').innerHTML = '<option value="">Select Divisional Office</option>';
+        } else if (type === 'hpcl') {
+          document.getElementById('ro_name_hpcl').value = '';
+          document.getElementById('state_hpcl').value = '';
+        } else if (type === 'nayara') {
+          document.getElementById('ro_name_nayara').value = '';
+          document.getElementById('state_nayara').value = '';
+          document.getElementById('location_nayara').value = '';
+        }
+      }
+    }
 
+    // Save Data Function
+    async function saveData(event, type) {
+      event.preventDefault();
+      const button = document.getElementById(`submit_${type}`);
+      const statusDiv = document.getElementById(`${type}Status`);
+      button.disabled = true;
+      statusDiv.textContent = 'Saving...';
+      statusDiv.className = 'status';
 
-            <label for="ro">RO Name:</label>
-            <input type="text" id="ro" name="ro_name" placeholder="RO Name">
+      const form = document.getElementById(type);
+      let data = new FormData(form);
 
-            <label for="State1">State:</label>
-            <select type="text" id="state1" name="state" >
-              <option value="">Select State</option>
-              <option value="Andhra Pradesh">Andhra Pradesh</option>
-              <option value="Assam">Assam</option>
-              <option value="Bihar">Bihar</option>
-              <option value="Chhattisgarh">Chhattisgarh</option>
-              <option value="Gujarat">Gujarat</option>
-              <option value="Haryana">Haryana</option>
-              <option value="Himachal Pradesh">Himachal Pradesh</option>
-              <option value="Jharkhand">Jharkhand</option>
-              <option value="Karnataka">Karnataka</option>
-              <option value="Kerala">Kerala</option>
-              <option value="Madhya Pradesh">Madhya Pradesh</option>
-              <option value="Maharashtra">Maharashtra</option>
-              <option value="Orissa">Orissa</option>
-              <option value="Punjab">Punjab</option>
-              <option value="Rajasthan">Rajasthan</option>
-              <option value="Tamil Nadu">Tamil Nadu</option>
-              <option value="Telangana">Telangana</option>
-              <option value="Uttar Pradesh">Uttar Pradesh</option>
-              <option value="Uttarakhand">Uttarakhand</option>
-              <option value="West Bengal">West Bengal</option>
-            </select>
+      try {
+        const response = await fetch(POST_API_URLS[type], {
+          method: "POST",
+          body: data
+        });
+        const result = await response.text();
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" placeholder="Location">
-          
-            <button class="button" onclick="saveDataNayara()" type="button" style="background-color: rgb(25, 32, 1);"  id="submit3" > Submit</button>
-          </form></div>
-        
-    
+        if (result) {
+          statusDiv.textContent = 'Data Saved successfully!';
+          statusDiv.className = 'status success';
+          form.reset();
+          if (type === 'iocl') {
+            document.getElementById('division_office_iocl').innerHTML = '<option value="">Select Divisional Office</option>';
+          }
+          document.getElementById(`${type}Result`).textContent = '';
+        } else {
+          throw new Error('Failed to save data');
+        }
+      } catch (error) {
+        statusDiv.textContent = `Error: ${error.message}`;
+        statusDiv.className = 'status error';
+      } finally {
+        button.disabled = false;
+      }
+    }
+  </script>
 </body>
 </html>
