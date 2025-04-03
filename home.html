@@ -66,7 +66,7 @@
 
     function hide() {
       const role = localStorage.getItem('role');
-      const elements = ['vertual_id', 'add_outlet', 'button3-dropdown', 'user_master', 'upload_ro'];
+      const elements = ['vertual_id', 'add_outlet', 'user_master', 'upload_ro'];
       elements.forEach(id => {
         document.getElementById(id).style.display = role === 'admin' ? 'block' : 'none';
       });
