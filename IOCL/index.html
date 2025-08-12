@@ -315,50 +315,44 @@
 // Single reloadHomePage function with iframe check
 function reloadHomePage() {
   if (window.top !== window.self) {
-    window.top.location.href = "../home.html"; // Reload in main window if in iframe
+    window.top.location.href = "../home.html"; 
   } else {
-    window.location.href = "../home.html"; // Reload directly if in main window
+    window.location.href = "../home.html";
   }
 }
 
-// Reset localStorage on browser close/reopen
-(function resetLocalStorageOnBrowserClose() {
-  const sessionKey = 'sessionActive';
-  const currentSession = sessionStorage.getItem(sessionKey);
-
-  if (!currentSession) {
-    // Browser was closed and reopened, reset localStorage
-    localStorage.setItem("name", "logout");
-    localStorage.setItem("state", "");
-    localStorage.setItem("role", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("account_status", "");
-    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
+// Clear localStorage only when browser is fully closed
+window.addEventListener("unload", function () {
+  if (!sessionStorage.getItem("sessionActive")) {
+    localStorage.clear();
   }
-})();
+});
+
+// Set session active when the page is loaded
+window.addEventListener("load", function () {
+  sessionStorage.setItem("sessionActive", "true");
+});
 
 // Login check logic
 var nitin = localStorage.getItem("name");
-
-if (nitin === "secrate") {
-  // Stay on page if "secrate" is valid
-} else {
-  window.location.replace("../index.html"); // Redirect to index if not valid
+if (nitin !== "secrate") {
+  window.location.replace("../index.html");
   reloadHomePage();
 }
 
 // Logout or timeout logic
 if (localStorage.getItem('name') === 'logout') {
-  window.location.replace('../index.html'); // Redirect to index if logged out
+  window.location.replace('../index.html');
 } else {
-  // Set username to input field if it exists
   const username = localStorage.getItem('username');
   if (username && document.getElementById('audit_conducted_person_name')) {
     document.getElementById('audit_conducted_person_name').value = username;
   }
 
   // Session timeout logic (30 minutes)
-  var sessionTimeout = setTimeout(function () {
+  var sessionTimeout = setTimeout(logoutUser, 1800000);
+
+  function logoutUser() {
     localStorage.setItem("name", "logout");
     localStorage.setItem("state", "");
     localStorage.setItem("role", "");
@@ -366,32 +360,14 @@ if (localStorage.getItem('name') === 'logout') {
     localStorage.setItem("account_status", "");
     window.location.replace('../index.html');
     reloadHomePage();
-  }, 1800000); // 1800000 ms = 30 minutes
-
+  }
 
   // Reset timeout on user activity
   window.addEventListener('mousemove', function () {
     clearTimeout(sessionTimeout);
-    sessionTimeout = setTimeout(function () {
-      localStorage.setItem("name", "logout");
-      localStorage.setItem("state", "");
-      localStorage.setItem("role", "");
-      localStorage.setItem("username", "");
-      localStorage.setItem("account_status", "");
-      window.location.replace('../index.html');
-      reloadHomePage()
-    }, 1800000);
+    sessionTimeout = setTimeout(logoutUser, 1800000);
   });
 }
-// Retrieve the value from localStorage
-const username = localStorage.getItem('username');
-
-// Check if username exists in localStorage and set it to the input field
-if (username) {
-  document.getElementById('audit_conducted_person_name').value = username;
-}
-
-
 </script>
 
 </html>
