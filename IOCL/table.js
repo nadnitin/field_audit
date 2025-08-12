@@ -356,3 +356,63 @@ function downloadExcel() {
   // Cleanup: Remove the anchor element from the DOM
   document.body.removeChild(downloadLink);
 }
+
+
+function downloadMasterData() {
+    // Loader दिसू दे
+    document.getElementById('loader').classList.remove('hidden');
+
+    let script = document.createElement('script');
+    let callbackName = 'handleMasterData';
+    script.src = 'https://script.google.com/macros/s/AKfycbwbSYIkrxgipZEgWhlbdevdtEnyXrXm6pNvAGlirXtEe46omi3I3VxLnsFK4biJ2cgotw/exec?callback=' + callbackName;
+    document.body.appendChild(script);
+}
+
+function formatDateTime(value) {
+    if (!value) return "";
+    let d = new Date(value);
+    if (isNaN(d.getTime())) return value; // जर date नाही तर जसंच्या तसं ठेव
+
+    let day = String(d.getDate()).padStart(2, '0');
+    let month = String(d.getMonth() + 1).padStart(2, '0');
+    let year = d.getFullYear();
+
+    let hours = String(d.getHours()).padStart(2, '0');
+    let minutes = String(d.getMinutes()).padStart(2, '0');
+    let seconds = String(d.getSeconds()).padStart(2, '0');
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
+function handleMasterData(data) {
+    console.log("Master data received", data);
+
+    // Fixed header
+    const headers = [
+        'Date','Site Code','Site Name','State','DO Office','Total Tank','Online Tank','Offline Tank','Tank Offline Remark',
+        'Total DU','Online DU','Offline DU','DU Offline Remark','Motherboard Make','Motherboard Serial','UPS Status','UPS Remark','UPS Battery Status','UPS Battery Remark',
+        'DG Status','FCC Probe Shield','Zener Barrier','FCC Earth Voltage','Internet Connectivity','Site Status','Site Offline Remark',
+        'RDB VS CMS Status','Interlock Report','FOIR Report Last 5 Days','Your Name','ALL Report Status','IF Any Remark',
+        'Audit Status','Attachment','Anydesk OR IP','Password'
+    ];
+
+    // Header + formatted data तयार कर
+    let finalData = [headers];
+
+    // data.content मधील पहिला कॉलम format करून finalData मध्ये push कर
+    for (let i = 1; i < data.content.length; i++) { // i=1 म्हणजे header सोडून
+        let row = [...data.content[i]];
+        row[0] = formatDateTime(row[0]); // पहिला कॉलम date-time format
+        finalData.push(row);
+    }
+
+    // Excel तयार कर
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.aoa_to_sheet(finalData);
+    XLSX.utils.book_append_sheet(wb, ws, "IOCL_Master");
+
+    XLSX.writeFile(wb, "IOCL_Master.xlsx");
+
+    // Loader hide कर
+    document.getElementById('loader').classList.add('hidden');
+}
