@@ -86,18 +86,12 @@
       window.location.replace("index.html");
     }
 
-    (function resetLocalStorageOnBrowserClose() {
-      const sessionKey = 'sessionActive';
-      const currentSession = sessionStorage.getItem(sessionKey);
-      if (!currentSession) {
-        localStorage.setItem("name", "logout");
-        localStorage.setItem("state", "");
-        localStorage.setItem("role", "");
-        localStorage.setItem("username", "");
-        localStorage.setItem("account_status", "");
-        sessionStorage.setItem(sessionKey, 'true');
-      }
-    })();
+    // Browser बंद झाल्यावर localStorage clear करा
+window.addEventListener("beforeunload", function () {
+    localStorage.clear();
+});
+
+    
 
 
     var nitin = localStorage.getItem("name");
