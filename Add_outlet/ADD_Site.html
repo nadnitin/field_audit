@@ -215,14 +215,14 @@
 
   <script>
     // Reset localStorage on browser close/reopen
-    (function resetLocalStorageOnBrowserClose() {
+    function resetLocalStorageOnBrowserClose() {
       const sessionKey = 'sessionActive';
       const currentSession = sessionStorage.getItem(sessionKey);
       if (!currentSession) {
         localStorage.clear();
         sessionStorage.setItem(sessionKey, 'true');
       }
-    })();
+    }
 
     // Login check logic
     var nitin = localStorage.getItem("name");
@@ -422,3 +422,4 @@
   </script>
 </body>
 </html>
+
