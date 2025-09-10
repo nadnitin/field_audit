@@ -31,7 +31,7 @@
 }
 
 // Reset localStorage on browser close/reopen
-(function resetLocalStorageOnBrowserClose() {
+function resetLocalStorageOnBrowserClose() {
   const sessionKey = 'sessionActive';
   const currentSession = sessionStorage.getItem(sessionKey);
 
@@ -44,7 +44,7 @@
     localStorage.setItem("account_status", "");
     sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
   }
-})();
+}
 
 // Login check logic
 var nitin = localStorage.getItem("name");
@@ -161,3 +161,4 @@ if (localStorage.getItem('name') === 'logout') {
     <table class="table" id="mytable"></table>
     <script class="u-script" type="text/javascript" src="table.js" defer=""></script>
     <script type="text/javascript">
+
