@@ -321,7 +321,7 @@ function reloadHomePage() {
 }
 
 // Reset localStorage on browser close/reopen
-(function resetLocalStorageOnBrowserClose() {
+function resetLocalStorageOnBrowserClose() {
   const sessionKey = 'sessionActive';
   const currentSession = sessionStorage.getItem(sessionKey);
 
@@ -334,7 +334,7 @@ function reloadHomePage() {
     localStorage.setItem("account_status", "");
     sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
   }
-})();
+}
 
 // Login check logic
 var nitin = localStorage.getItem("name");
