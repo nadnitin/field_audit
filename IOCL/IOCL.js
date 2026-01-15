@@ -175,7 +175,7 @@ function saveData(e) {
   }
 
   else if (stateValue === "Bihar SO" || stateValue === "IndianOil-AOD St OFF" || stateValue === "West Bengal SO" || stateValue === "Odisha SO") {
-    apiUrl = 'https://script.google.com/macros/s/AKfycbyNgCkBa7IbTZQQcVkqWzuzatxm7wrPgpmQ5ret_TDrQYAv5iYLm8knywg53DQJm_g1WA/exec';//EAST
+    apiUrl = 'https://script.google.com/macros/s/AKfycbzq2_EpLQfJs-FmRf26UNDLLjBJytfDGILIeaQBio7mku7QI9vlRUTMsCLeKUjxhf4k5w/exec';//EAST
   }
 
   else if (stateValue === "TAPSO" || stateValue === "Kerala SO" || stateValue === "Tamilnadu SO" || stateValue === "Karnataka SO") {
@@ -442,3 +442,4 @@ if (userRole === "FE") {
   document.getElementById("viewButton").style.display = "none";
   document.getElementById("home").style.display = "none";
 }
+
