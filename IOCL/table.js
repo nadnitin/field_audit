@@ -10,7 +10,7 @@ function loadRegion(region) {
   let currentRegionURL = '';
   switch (region) {
     case 'East':
-      currentRegionURL = 'https://script.google.com/macros/s/AKfycbyNgCkBa7IbTZQQcVkqWzuzatxm7wrPgpmQ5ret_TDrQYAv5iYLm8knywg53DQJm_g1WA/exec';
+      currentRegionURL = 'https://script.google.com/macros/s/AKfycbzq2_EpLQfJs-FmRf26UNDLLjBJytfDGILIeaQBio7mku7QI9vlRUTMsCLeKUjxhf4k5w/exec';
       break;
     case 'North':
       currentRegionURL = 'https://script.google.com/macros/s/AKfycby7-mD5A6l4cObP2x6HmhtaHTTlzt-TTqpioIoKDKOIUgQMCVSYrhd-Owg9Mu8AvY5hIg/exec';
@@ -416,3 +416,4 @@ function handleMasterData(data) {
     // Loader hide कर
     document.getElementById('loader').classList.add('hidden');
 }
+
