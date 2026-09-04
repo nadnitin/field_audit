@@ -4,11 +4,10 @@ function compressAndLoadAsBinary() {
   const attachmentInput = document.getElementById('attachmentLink');
   
   const pdf = new jsPDF();
-  const maxDimension = 1024; // Resize large mobile photos to max 1024px
+  const maxDimension = 1024;
 
   function processImage(index) {
     if (index >= imageFileInput.files.length) {
-      // Remove the default blank first page of jsPDF
       if (pdf.internal.getNumberOfPages() > 1) {
         pdf.deletePage(1);
       }
@@ -35,7 +34,6 @@ function compressAndLoadAsBinary() {
           let width = imageElement.width;
           let height = imageElement.height;
 
-          // Scale down dimensions to prevent browser RAM exhaustion
           if (width > height && width > maxDimension) {
             height = Math.round((height * maxDimension) / width);
             width = maxDimension;
@@ -51,7 +49,6 @@ function compressAndLoadAsBinary() {
           const context = canvas.getContext('2d');
           context.drawImage(imageElement, 0, 0, width, height);
 
-          // Compress quality to 0.6 to keep the PDF lightweight (<1MB)
           const compressedData = canvas.toDataURL('image/jpeg', 0.6);
 
           pdf.addPage();
@@ -102,6 +99,40 @@ function validateRequiredFields() {
   return isValid;
 }
 
+function validation() {
+  var v = document.getElementById("rdb_vs_cms") ? document.getElementById("rdb_vs_cms").value : "";
+  var x = document.getElementById("foir_report_last_five_days") ? document.getElementById("foir_report_last_five_days").value : "";
+  var z = document.getElementById("reports_status") ? document.getElementById("reports_status").value : "";
+  var h = document.getElementById("tank_offline") ? document.getElementById("tank_offline").value : "";
+  var l = document.getElementById("du_offline") ? document.getElementById("du_offline").value : "";
+  var j = document.getElementById("site_status") ? document.getElementById("site_status").value : "";
+  var result = "";
+
+  if (v == "MATCH" && x == "MATCH" && z == "YES" && h == 0 && l == 0) {
+    result = "All Report Match";
+  } else if (v == "MISMATCH" && x == "MISMATCH" && z == "NO") {
+    result = "All Report Mismatch";
+  } else if (v == "MISMATCH" && x == "MATCH" && z == "NO") {
+    result = "RDB Mismatch";
+  } else if (v == "MATCH" && x == "MISMATCH" && z == "NO") {
+    result = "FOIR Mismatch";
+  } else {
+    result = "Need To RE-Validate";
+  }
+
+  if (j == "Site Closed") {
+    result = "RO Closed";
+  }
+
+  const validationElem = document.getElementById('validation');
+  if (validationElem) {
+    validationElem.value = result;
+  }
+
+  alert("Your Data Submit AS  :-  " + result);
+  return result;
+}
+
 function saveData(e) {
   if (e) e.preventDefault();
 
@@ -109,7 +140,7 @@ function saveData(e) {
   const attachmentLink = document.getElementById('attachmentLink');
   const attachmentValue = attachmentLink ? attachmentLink.value.trim() : '';
 
-  const validationResult = validation();
+  validation();
   const isValid = validateRequiredFields();
 
   if (!isValid) {
@@ -123,11 +154,6 @@ function saveData(e) {
     if (!userResponse) {
       return false;
     }
-  }
-
-  if (validationResult === "All Report Mismatch" || validationResult === "FOIR Mismatch" || validationResult === "Need To RE-Validate") {
-    alert("Input is not valid. It will not be saved.");
-    return false;
   }
 
   activateLoader();
@@ -152,7 +178,6 @@ function saveData(e) {
     return false;
   }
 
-  // Convert FormData to URLSearchParams to prevent 302 redirect payload drop
   const form = document.getElementById('dataForm');
   const formData = new FormData(form);
   const payload = new URLSearchParams();
@@ -171,7 +196,7 @@ function saveData(e) {
     .then(data => {
       alert("Data Saved successfully");
       form.reset();
-      updateFileCount();
+      updateFileCount(0);
       deactivateLoader();
       if (submitBtn) submitBtn.disabled = false;
     })
@@ -202,38 +227,6 @@ function loaddata() {
       console.error(err);
       deactivateLoader();
     });
-}
-
-function validation() {
-  var v = document.getElementById("rdb_vs_cms") ? document.getElementById("rdb_vs_cms").value : "";
-  var x = document.getElementById("foir_report_last_five_days") ? document.getElementById("foir_report_last_five_days").value : "";
-  var z = document.getElementById("reports_status") ? document.getElementById("reports_status").value : "";
-  var h = document.getElementById("tank_offline") ? document.getElementById("tank_offline").value : "";
-  var l = document.getElementById("du_offline") ? document.getElementById("du_offline").value : "";
-  var j = document.getElementById("site_status") ? document.getElementById("site_status").value : "";
-  var result = "";
-
-  if (v == "MATCH" && x == "MATCH" && z == "YES" && h == 0 && l == 0) {
-    result = "All Report Match";
-  } else if (v == "MISMATCH" && x == "MISMATCH" && z == "NO") {
-    result = "All Report Mismatch";
-  } else if (v == "MISMATCH" && x == "MATCH" && z == "NO") {
-    result = "RDB Mismatch";
-  } else if (v == "MATCH" && x == "MISMATCH" && z == "NO") {
-    result = "FOIR Mismatch";
-  } else {
-    result = "Need To RE-Validate";
-  }
-
-  if (j == "Site Closed") {
-    result = "RO Closed";
-  }
-
-  const validationElem = document.getElementById('validation');
-  if (validationElem) {
-    validationElem.value = result;
-  }
-  return result;
 }
 
 function getSitedetails() {
@@ -333,7 +326,6 @@ function highlightRequiredFields() {
   });
 }
 
-// Event Listeners setup
 const imageFileInput = document.getElementById('imageFile');
 if (imageFileInput) {
   imageFileInput.addEventListener('change', function () {
