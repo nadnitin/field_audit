@@ -8,9 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="Wed, 11 Jan 1984 05:00:00 GMT">
   <link rel="stylesheet" href="IOCL.css" media="screen">
-  <!-- Load external libraries first -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
-  <!-- Load custom JS with defer to let DOM load fully -->
   <script type="text/javascript" src="IOCL.js" defer></script>
 </head>
 
@@ -30,7 +28,6 @@
   <div id="myLoader"></div>
 
   <div class="container" id="myDiv">
-    <!-- Removed inline onsubmit to prevent double execution; handled exclusively in IOCL.js -->
     <form id="dataForm">
       <div class="form-group">
         <label for="site_code">Sap Code</label>
@@ -267,7 +264,6 @@
   </div>
 
   <script>
-    // Safe redirection without nested frame issues
     function reloadHomePage() {
       if (window.top !== window.self) {
         window.top.location.href = "../home.html";
@@ -276,26 +272,22 @@
       }
     }
 
-    // Modern replacement for deprecated unload event
     window.addEventListener("pagehide", function () {
       if (!sessionStorage.getItem("sessionActive")) {
         localStorage.clear();
       }
     });
 
-    // Session initialization
     window.addEventListener("load", function () {
       sessionStorage.setItem("sessionActive", "true");
     });
 
-    // Authentication validation
     var nitin = localStorage.getItem("name");
     if (nitin !== "secrate") {
       window.location.replace("../index.html");
       reloadHomePage();
     }
 
-    // Session timeout (30 Minutes)
     if (localStorage.getItem('name') === 'logout') {
       window.location.replace('../index.html');
     } else {
