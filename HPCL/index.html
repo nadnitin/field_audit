@@ -4,105 +4,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  
+  <!-- Strict No-Cache Headers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="Wed, 11 Jan 1984 05:00:00 GMT">
-  <script type="text/javascript" src="HPCL.js" defer=""></script>
-  <link rel="stylesheet" href="HPCL.css" media="screen">
+  <meta http-equiv="Expires" content="0">
 
-
-
- 
-
+  <link rel="stylesheet" href="HPCL.css?v=1.1" media="screen">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+  <script type="text/javascript" src="HPCL.js?v=1.1" defer></script>
 </head>
 
 <body onload="loaddata()">
 
   <header> 
-  
     HPCL Field Audit
-
   </header>
-  <h2>📘Field Audit REPORTS MANDATORY SNAPS📚<br>
 
-    NOTE-All photo with timestamp & location<br>
-    <br>
-    
-    1-Full FCC (Cabinate/IT Rack) &nbsp;  2:-Tank status &nbsp;  3 :-DU status <br>
-    <br>
-    4 :-Tank scotch Cast &nbsp; 5:-Earth shield &nbsp; 6:-UPS with Battery &nbsp; <br> 
-    <br>
-    7:-FCC (Motherboard,RS485,Expanstion) &nbsp; 8:-SPD &nbsp; 9:-TLS IB /Renu Console/SBEM-START Zener Barrier</h2>
-    
-    
+  <h2>📘Field Audit REPORTS MANDATORY SNAPS📚<br>
+    NOTE-All photo with timestamp & location<br><br>
+    1-Full FCC (Cabinate/IT Rack) &nbsp; 2:-Tank status &nbsp; 3 :-DU status <br><br>
+    4 :-Tank scotch Cast &nbsp; 5:-Earth shield &nbsp; 6:-UPS with Battery &nbsp; <br><br>
+    7:-FCC (Motherboard,RS485,Expanstion) &nbsp; 8:-SPD &nbsp; 9:-TLS IB /Renu Console/SBEM-START Zener Barrier
+  </h2>
 
   <div id="myLoader"></div>
 
   <div class="container" id="myDiv">
-
-    <form id="dataForm" onsubmit="return saveData(event)">
+    <!-- Removed inline onsubmit to prevent double execution -->
+    <form id="dataForm">
 
       <div class="form-group">
         <label for="ro_code">RO Code </label>
-        <input type="number" placeholder="RO Code" required id="ro_code" onclick="Resetname()"
-          onblur="getSitedetails(),empty()" name="ro_code">
-
+        <input type="number" placeholder="RO Code" required id="ro_code" onclick="Resetname()" onblur="getSitedetails(); empty();" name="ro_code">
       </div>
+
       <div class="form-group">
         <label for="ro_name">RO Name</label>
         <input type="text" placeholder="RO Name" readonly required id="ro_name" name="ro_name">
-
       </div>
+
       <div class="form-group">
         <label for="state">State Office</label>
         <input type="text" placeholder="State Office" readonly required id="state" name="state">
       </div>
+
       <div class="form-group">
         <label for="regional_office">Regional Office</label>
         <input type="text" placeholder="Regional Office" required id="regional_office" readonly name="regional_office">
       </div>
+
       <div class="form-group">
         <label for="total_tank">Total Tank</label>
-        <input type="number" placeholder="Total Tank" required id="total_tank" min="0" onkeyup="tankvs()"
-          name="total_tank">
+        <input type="number" placeholder="Total Tank" required id="total_tank" min="0" onkeyup="tankvs()" name="total_tank">
       </div>
+
       <div class="form-group">
         <label for="online_tank">Online tank</label>
-        <input type="number" placeholder="Online tank" required id="online_tank" min="0" onkeyup="tankvs()"
-          name="tank_online">
+        <input type="number" placeholder="Online tank" required id="online_tank" min="0" onkeyup="tankvs()" name="tank_online">
       </div>
 
       <div class="form-group">
         <label for="offline_tank">Offline Tank</label>
-        <input type="number" placeholder="Offline Tank" id="offline_tank" min="0" onkeyup="tankvs()" readonly
-          name="tank_offline" required>
-
+        <input type="number" placeholder="Offline Tank" id="offline_tank" min="0" onkeyup="tankvs()" readonly name="tank_offline" required>
       </div>
+
       <div class="form-group">
         <label for="remark_tank_offline">Tank Offline Remark</label>
-        <input type="text" placeholder="Tank Offline Remark"  autocomplete="off" id="remark_tank_offline" name="remark_tank_offline"
-          required>
+        <input type="text" placeholder="Tank Offline Remark" autocomplete="off" id="remark_tank_offline" name="remark_tank_offline" required>
       </div>
+
       <div class="form-group">
         <label for="du_total">Total DU</label>
         <input type="number" placeholder="Total DU" id="du_total" min="0" name="total_du" onkeyup="tankvs()" required>
       </div>
+
       <div class="form-group">
         <label for="du_online">Online DU</label>
-        <input type="number" placeholder="Online DU" id="du_online" min="0" name="du_online" onkeyup="tankvs()"
-          required>
+        <input type="number" placeholder="Online DU" id="du_online" min="0" name="du_online" onkeyup="tankvs()" required>
       </div>
+
       <div class="form-group">
         <label for="offline_du">Offline DU</label>
-        <input type="number" placeholder="Offline DU" readonly min="0" required id="offline_du" onkeyup="tankvs()"
-          name="du_offline">
+        <input type="number" placeholder="Offline DU" readonly min="0" required id="offline_du" onkeyup="tankvs()" name="du_offline">
       </div>
+
       <div class="form-group">
         <label for="remark_du_offline">DU Offline Remark</label>
         <input type="text" placeholder="DU Offline Remark" autocomplete="off" required id="remark_du_offline" name="remark_du_offline">
       </div>
-
 
       <div class="form-group">
         <label for="mbmake">Motherboard Make</label>
@@ -118,11 +108,8 @@
 
       <div class="form-group">
         <label for="mb_serial">Motherboard Serial</label>
-        <input type="text" placeholder="Motherboard Serial"  id="mb_serial" name="mb_serial"
-          class="half-width required" autocomplete="off" oninput="this.value = this.value.toUpperCase()" >
+        <input type="text" placeholder="Motherboard Serial" id="mb_serial" name="mb_serial" class="half-width required" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
       </div>
-
-
 
       <div class="form-group">
         <label for="ups_status">UPS Status</label>
@@ -133,12 +120,10 @@
         </select>
       </div>
 
-
       <div class="form-group">
         <label for="ups_remark">UPS Remark</label>
-        <input type="text" placeholder="UPS Remark"  id="ups_remark" name="ups_remark" required>
+        <input type="text" placeholder="UPS Remark" id="ups_remark" name="ups_remark" required>
       </div>
-
 
       <div class="form-group">
         <label for="ups_battery">UPS Battery Status</label>
@@ -149,11 +134,11 @@
           <option value="Dead">Dead</option>
         </select>
       </div>
+
       <div class="form-group">
         <label for="ups_battery_remark">UPS Battery Remark</label>
         <input type="text" placeholder="UPS Battery Remark" id="ups_battery_remark" name="ups_battery_remark" required>
       </div>
-
 
       <div class="form-group">
         <label for="dg_status">DG Availability</label>
@@ -165,7 +150,6 @@
         </select>
       </div>
 
-
       <div class="form-group">
         <label for="fcc_sheld">FCC Probe Shield Earth</label>
         <select id="fcc_sheld" name="fcc_sheld" required>
@@ -174,7 +158,6 @@
           <option value="NO">NO</option>
         </select>
       </div>
-
 
       <div class="form-group">
         <label for="zener_barrier">Zener Barrier Availability</label>
@@ -185,12 +168,10 @@
         </select>
       </div>
 
-
       <div class="form-group">
         <label for="earth_voltage">FCC Earth Voltage</label>
         <input type="number" placeholder="FCC Earth Voltage" id="earth_voltage" required name="earth_voltage" step="1">
       </div>
-
 
       <div class="form-group">
         <label for="hos_connectivity">HOS Connectivety</label>
@@ -202,8 +183,6 @@
         </select>
       </div>
 
-
-
       <div class="form-group">
         <label for="hos_status">HOS Status</label>
         <select id="hos_status" name="hos_status" required>
@@ -214,13 +193,10 @@
         </select>
       </div>
 
-
       <div class="form-group">
         <label for="site_offline_remark">Site Offline Remark</label>
-        <input type="text" placeholder="Site Offline Remark" id="site_offline_remark" name="site_offline_remark"
-          required>
+        <input type="text" placeholder="Site Offline Remark" id="site_offline_remark" name="site_offline_remark" required>
       </div>
-
 
       <div class="form-group">
         <label for="interlock_report">Interlock Report</label>
@@ -231,7 +207,6 @@
         </select>
       </div>
 
-
       <div class="form-group">
         <label for="foir_report_last_five_days">FOIR Report Last 5 Days</label>
         <select id="foir_report_last_five_days" name="foir_report_last_five_days" required>
@@ -240,7 +215,6 @@
           <option value="MISMATCH">MISMATCH</option>
         </select>
       </div>
-
 
       <div class="form-group">
         <label for="all_report_status">All Report Match Status</label>
@@ -258,8 +232,7 @@
 
       <div class="form-group">
         <label for="audit_conducted_person_name">Employee ID</label>
-        <input type="text" readonly id="audit_conducted_person_name" required
-          name="audit_conducted_person_name">
+        <input type="text" readonly id="audit_conducted_person_name" required name="audit_conducted_person_name">
       </div>
 
       <div class="form-group">
@@ -269,123 +242,74 @@
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password" required name="password"
-          class="half-width password-input">
+        <input type="password" placeholder="Password" id="password" required name="password" class="half-width password-input">
       </div>
-
 
       <div class="form-group">
         <label class="fileInputLabel" for="imageFile" id="fileInputLabel">Attachment</label>
         <input type="file" hidden id="imageFile" name="imageFile" multiple>
-
       </div>
 
-      <div class="form-group">
-        <label for="validation"></label>
-        <input type="text"  id="validation" hidden required name="validation">
-      </div>
-
-
-      <div class="form-group">
-        <label for="attachmentLink" hidden for="attachment"></label>
-        <input type="text" hidden id="attachmentLink" name="attachment">
-
-
-      </div>
+      <input type="hidden" id="validation" name="validation">
+      <input type="hidden" id="attachmentLink" name="attachment">
 
       <div>
         <button type="submit" id="submit">Submit</button>
       </div>
-      
 
     </form>
   </div>
 
   <script>
+    const username = localStorage.getItem('username');
+    if (username && document.getElementById('audit_conducted_person_name')) {
+      document.getElementById('audit_conducted_person_name').value = username;
+    }
 
-// Retrieve the value from localStorage
-const username = localStorage.getItem('username');
+    function reloadHomePage() {
+      if (window.top !== window.self) {
+        window.top.location.href = "../home.html";
+      } else {
+        window.location.href = "../home.html";
+      }
+    }
 
-// Check if username exists in localStorage and set it to the input field
-if (username) {
-  document.getElementById('audit_conducted_person_name').value = username;
-}
+    window.addEventListener("pagehide", function () {
+      if (!sessionStorage.getItem("sessionActive")) {
+        localStorage.clear();
+      }
+    });
 
+    window.addEventListener("load", function () {
+      sessionStorage.setItem("sessionActive", "true");
+    });
 
-function reloadHomePage() {
-  if (window.top !== window.self) {
-    window.top.location.href = "../home.html"; // Reload in main window if in iframe
-  } else {
-    window.location.href = "../home.html"; // Reload directly if in main window
-  }
-}
+    var nitin = localStorage.getItem("name");
+    if (nitin !== "secrate") {
+      window.location.replace("../index.html");
+      reloadHomePage();
+    }
 
-// Reset localStorage on browser close/reopen
-function resetLocalStorageOnBrowserClose() {
-  const sessionKey = 'sessionActive';
-  const currentSession = sessionStorage.getItem(sessionKey);
-
-  if (!currentSession) {
-    // Browser was closed and reopened, reset localStorage
-    localStorage.setItem("name", "logout");
-    localStorage.setItem("state", "");
-    localStorage.setItem("role", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("account_status", "");
-    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
-  }
-}
-
-// Login check logic
-var nitin = localStorage.getItem("name");
-
-if (nitin === "secrate") {
-  // Stay on page if "secrate" is valid
-} else {
-  window.location.replace("../index.html"); // Redirect to index if not valid
-  reloadHomePage();
-}
-
-// Logout or timeout logic
-if (localStorage.getItem('name') === 'logout') {
-  window.location.replace('../index.html'); // Redirect to index if logged out
-} else {
-  // Set username to input field if it exists
-  const username = localStorage.getItem('username');
-  if (username && document.getElementById('audit_conducted_person_name')) {
-    document.getElementById('audit_conducted_person_name').value = username;
-  }
-
-  // Session timeout logic (30 minutes)
-  var sessionTimeout = setTimeout(function () {
-    localStorage.setItem("name", "logout");
-    localStorage.setItem("state", "");
-    localStorage.setItem("role", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("account_status", "");
-    window.location.replace('../index.html');
-    reloadHomePage();
-  }, 1800000); // 1800000 ms = 30 minutes
-
-
-  // Reset timeout on user activity
-  window.addEventListener('mousemove', function () {
-    clearTimeout(sessionTimeout);
-    sessionTimeout = setTimeout(function () {
-      localStorage.setItem("name", "logout");
-      localStorage.setItem("state", "");
-      localStorage.setItem("role", "");
-      localStorage.setItem("username", "");
-      localStorage.setItem("account_status", "");
+    if (localStorage.getItem('name') === 'logout') {
       window.location.replace('../index.html');
-      reloadHomePage()
-    }, 1800000);
-  });
-}
+    } else {
+      var sessionTimeout = setTimeout(logoutUser, 1800000);
 
+      function logoutUser() {
+        localStorage.setItem("name", "logout");
+        localStorage.setItem("state", "");
+        localStorage.setItem("role", "");
+        localStorage.setItem("username", "");
+        localStorage.setItem("account_status", "");
+        window.location.replace('../index.html');
+        reloadHomePage();
+      }
+
+      window.addEventListener('mousemove', function () {
+        clearTimeout(sessionTimeout);
+        sessionTimeout = setTimeout(logoutUser, 1800000);
+      });
+    }
   </script>
-
-
 </body>
-
 </html>
