@@ -4,12 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  
+  <!-- Strict No-Cache Headers for Modern Browsers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="Wed, 11 Jan 1984 05:00:00 GMT">
-  <link rel="stylesheet" href="IOCL.css" media="screen">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- External Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
-  <script type="text/javascript" src="IOCL.js" defer></script>
+
+  <!-- Cache Busted CSS and JS with Version Parameter -->
+  <link rel="stylesheet" href="IOCL.css?v=1.1" media="screen">
+  <script type="text/javascript" src="IOCL.js?v=1.1" defer></script>
 </head>
 
 <body onload="loaddata()">
