@@ -209,10 +209,20 @@ function saveData(e) {
 
 let roDataArr = [];
 
+
+
+
 function loaddata() {
   activateLoader();
+  
+  
   fetch('https://script.google.com/macros/s/AKfycbwA9p-gERcEsl0seZA5iQZGAW5Ua5nVaCuxR0hr0rdFETwb36JcuUDANg_e8payIYYs/exec')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok, status: ' + res.status);
+      }
+      return res.json();
+    })
     .then(data => {
       deactivateLoader();
       const rodata = data?.content1;
