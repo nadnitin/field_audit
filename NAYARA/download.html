@@ -1,100 +1,87 @@
 <!DOCTYPE html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-
-<html>
+<html lang="en">
   <head>
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>RO Data Table</title>
     <meta charset="UTF-8" />
-	<link rel="stylesheet" href="table.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Strict No-Cache Headers -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <title>RO Data Table</title>
+    
+    <!-- Stylesheet and Libraries -->
+    <link rel="stylesheet" href="table.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script class="u-script" type="text/javascript" src="table.js?v=1.1" defer></script>
 
+    <script>
+      // Safe Authentication and Session Handling
+      function reloadHomePage() {
+        if (window.top !== window.self) {
+          window.top.location.href = "../home.html";
+        } else {
+          window.location.href = "../home.html";
+        }
+      }
+
+      function resetLocalStorageOnBrowserClose() {
+        const sessionKey = 'sessionActive';
+        const currentSession = sessionStorage.getItem(sessionKey);
+
+        if (!currentSession) {
+          localStorage.setItem("name", "logout");
+          localStorage.setItem("state", "");
+          localStorage.setItem("role", "");
+          localStorage.setItem("username", "");
+          localStorage.setItem("account_status", "");
+          sessionStorage.setItem(sessionKey, 'true');
+        }
+      }
+
+      // Login check logic
+      var nitin = localStorage.getItem("name");
+      if (nitin !== "secrate") {
+        window.location.replace("../index.html");
+        reloadHomePage();
+      }
+
+      // Logout or timeout logic
+      if (localStorage.getItem('name') === 'logout') {
+        window.location.replace('../index.html');
+      } else {
+        // Safe check: Only set value if element actually exists on the page
+        const username = localStorage.getItem('username');
+        window.addEventListener("DOMContentLoaded", function () {
+          const empInput = document.getElementById('audit_conducted_person_name');
+          if (username && empInput) {
+            empInput.value = username;
+          }
+        });
+
+        // Session timeout logic (30 minutes)
+        var sessionTimeout = setTimeout(logoutUser, 1800000);
+
+        function logoutUser() {
+          localStorage.setItem("name", "logout");
+          localStorage.setItem("state", "");
+          localStorage.setItem("role", "");
+          localStorage.setItem("username", "");
+          localStorage.setItem("account_status", "");
+          window.location.replace('../index.html');
+          reloadHomePage();
+        }
+
+        // Reset timeout on user activity
+        window.addEventListener('mousemove', function () {
+          clearTimeout(sessionTimeout);
+          sessionTimeout = setTimeout(logoutUser, 1800000);
+        });
+      }
+    </script>
   </head>
-  <script> 
-    
-    // Retrieve the value from localStorage
-    const username = localStorage.getItem('username');
-    
-    // Check if username exists in localStorage and set it to the input field
-    if (username) {
-      document.getElementById('audit_conducted_person_name').value = username;
-    }
-    
-    
-    function reloadHomePage() {
-  if (window.top !== window.self) {
-    window.top.location.href = "../home.html"; // Reload in main window if in iframe
-  } else {
-    window.location.href = "../home.html"; // Reload directly if in main window
-  }
-}
 
-// Reset localStorage on browser close/reopen
-function resetLocalStorageOnBrowserClose() {
-  const sessionKey = 'sessionActive';
-  const currentSession = sessionStorage.getItem(sessionKey);
-
-  if (!currentSession) {
-    // Browser was closed and reopened, reset localStorage
-    localStorage.setItem("name", "logout");
-    localStorage.setItem("state", "");
-    localStorage.setItem("role", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("account_status", "");
-    sessionStorage.setItem(sessionKey, 'true'); // Mark this session as active
-  }
-}
-
-// Login check logic
-var nitin = localStorage.getItem("name");
-
-if (nitin === "secrate") {
-  // Stay on page if "secrate" is valid
-} else {
-  window.location.replace("../index.html"); // Redirect to index if not valid
-  reloadHomePage();
-}
-
-// Logout or timeout logic
-if (localStorage.getItem('name') === 'logout') {
-  window.location.replace('../index.html'); // Redirect to index if logged out
-} else {
-  // Set username to input field if it exists
-  const username = localStorage.getItem('username');
-  if (username && document.getElementById('audit_conducted_person_name')) {
-    document.getElementById('audit_conducted_person_name').value = username;
-  }
-
-  // Session timeout logic (30 minutes)
-  var sessionTimeout = setTimeout(function () {
-    localStorage.setItem("name", "logout");
-    localStorage.setItem("state", "");
-    localStorage.setItem("role", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("account_status", "");
-    window.location.replace('../index.html');
-    reloadHomePage();
-  }, 1800000); // 1800000 ms = 30 minutes
-
-
-  // Reset timeout on user activity
-  window.addEventListener('mousemove', function () {
-    clearTimeout(sessionTimeout);
-    sessionTimeout = setTimeout(function () {
-      localStorage.setItem("name", "logout");
-      localStorage.setItem("state", "");
-      localStorage.setItem("role", "");
-      localStorage.setItem("username", "");
-      localStorage.setItem("account_status", "");
-      window.location.replace('../index.html');
-      reloadHomePage()
-    }, 1800000);
-  });
-}
-    
-  </script>
-  
   <body onload="hide()">
     <header>Nayara</header>
     <br /><br /><br />
@@ -106,21 +93,22 @@ if (localStorage.getItem('name') === 'logout') {
     <button class="btn2" onclick="loadRegion('South')">South</button>
     <button class="btn3" id="master" onclick="loadRegion('master')">Master</button>
     <button class="btn3" id="master_download" onclick="downloadExcel()">Master Download</button>
+
     <input
       type="text"
       class="search-box"
       id="searchInput"
       onkeyup="filterTable()"
       placeholder="Search for Site Code..."
-    /><input
-    type="text"
-    class="search-box"
-    id="site_name"
-    onkeyup="filterTable()"
-    placeholder="Search for Site Name..."
-  />
-    
-    
+    />
+    <input
+      type="text"
+      class="search-box"
+      id="site_name"
+      onkeyup="filterTable()"
+      placeholder="Search for Site Name..."
+    />
+
     <select id="state" class="search-box" onchange="filterTable()">
       <option value="">--State--</option>
       <option value="">Select ALL</option>
@@ -149,16 +137,14 @@ if (localStorage.getItem('name') === 'logout') {
       <option value="Uttarakhand">Uttarakhand</option>
       <option value="West Bengal">West Bengal</option>
     </select>
-	<button class="btn" id="download_button" onclick="downloadTable()">Download</button>
 
-    
+    <button class="btn" id="download_button" onclick="downloadTable()">Download</button>
 
-    
     <div class="loader-container hidden" id="loader">
       <div class="loader"></div>
     </div>
     <br /><br />
+    
     <table class="table" id="mytable"></table>
-    <script class="u-script" type="text/javascript" src="table.js" defer=""></script>
-    <script type="text/javascript">
-
+  </body>
+</html>
