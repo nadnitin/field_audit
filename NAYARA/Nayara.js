@@ -117,7 +117,7 @@ function validation() {
     result = "Need To RE-Validate";
   }
 
-  if (j == "RO Closed") {
+  if (j == "RO Closed" || j == "Site Closed") {
     result = "RO Closed";
   }
 
@@ -214,8 +214,8 @@ function loaddata() {
   fetch('https://script.google.com/macros/s/AKfycbwA9p-gERcEsl0seZA5iQZGAW5Ua5nVaCuxR0hr0rdFETwb36JcuUDANg_e8payIYYs/exec')
     .then(res => res.json())
     .then(data => {
-      const rodata = data?.content1;
       deactivateLoader();
+      const rodata = data?.content1;
       if (rodata && rodata.length > 0) {
         roDataArr = rodata;
       }
@@ -226,17 +226,42 @@ function loaddata() {
     });
 }
 
+// Robust alphanumeric, trimmed, case-insensitive RO Code Search
 function getSitedetails() {
-  var roCodeElem = document.getElementById("ro_code");
-  var ro_code = roCodeElem ? roCodeElem.value : "";
-  if (ro_code) {
-    const dataIndex = roDataArr.findIndex(el => el[0] == ro_code);
-    const selectedro = roDataArr[dataIndex];
-    if (selectedro && selectedro.length > 0) {
-      if (document.getElementById('ro_name')) document.getElementById('ro_name').value = selectedro[1];
-      if (document.getElementById('state')) document.getElementById('state').value = selectedro[2];
-      if (document.getElementById('location')) document.getElementById('location').value = selectedro[3];
+  const roCodeInput = document.getElementById("ro_code");
+  if (!roCodeInput) return;
+
+  const enteredCode = String(roCodeInput.value || '').trim().toUpperCase();
+
+  if (enteredCode === "") {
+    Resetname();
+    return;
+  }
+
+  if (!roDataArr || roDataArr.length === 0) {
+    alert("Master RO data is still downloading. Please wait 2 seconds and try again.");
+    return;
+  }
+
+  // Exact alphanumeric match ignoring leading/trailing spaces and letter casing
+  const selectedro = roDataArr.find(function(el) {
+    return String(el[0] || '').trim().toUpperCase() === enteredCode;
+  });
+
+  if (selectedro) {
+    if (document.getElementById('ro_name')) document.getElementById('ro_name').value = selectedro[1] || "";
+    if (document.getElementById('state')) document.getElementById('state').value = selectedro[2] || "";
+    
+    // Supports both 'location' and 'regional_office' fields depending on the form
+    if (document.getElementById('location')) {
+      document.getElementById('location').value = selectedro[3] || "";
     }
+    if (document.getElementById('regional_office')) {
+      document.getElementById('regional_office').value = selectedro[3] || "";
+    }
+  } else {
+    Resetname();
+    alert("RO not found, contact your administrator");
   }
 }
 
@@ -263,20 +288,11 @@ function tankvs() {
   }
 }
 
-function empty() {
-  var x = document.getElementById("ro_code")?.value || "";
-  var y = document.getElementById("ro_name")?.value || "";
-  if (x === "") {
-    alert("Please Enter RO code");
-  } else if (y === "") {
-    alert("RO not found contact your administrator");
-  }
-}
-
 function Resetname() {
   if (document.getElementById("ro_name")) document.getElementById("ro_name").value = "";
   if (document.getElementById("state")) document.getElementById("state").value = "";
   if (document.getElementById("location")) document.getElementById("location").value = "";
+  if (document.getElementById("regional_office")) document.getElementById("regional_office").value = "";
 }
 
 function updateFileCount(count) {
