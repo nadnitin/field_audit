@@ -448,22 +448,14 @@ function disableRightClick(event) {
 document.addEventListener('contextmenu', disableRightClick);       
 
 
+function downloadMasterExcel() {
+  const spreadsheetId = '1XjspgB2EmoqODNOnfSV4lpvhTq6lpVKKY4pB1yPpyJE'
+  const downloadUrl = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId + '/export?format=xlsx';
 
-function downloadExcel() {
-  // Set the currentRegionURL for master region
-  let currentRegionURL = 'https://docs.google.com/spreadsheets/d/1XjspgB2EmoqODNOnfSV4lpvhTq6lpVKKY4pB1yPpyJE/edit#gid=0';
-  
-  // Create a temporary anchor element to trigger the download
   const downloadLink = document.createElement('a');
-  downloadLink.href = currentRegionURL;
-  downloadLink.download = 'master_data.xlsx'; // Specify the file name here
-  
-  // Append the anchor element to the body
+  downloadLink.href = downloadUrl;
+  downloadLink.setAttribute('download', 'Nayara_Master_Data.xlsx');
   document.body.appendChild(downloadLink);
-  
-  // Trigger the click event on the anchor element
   downloadLink.click();
-  
-  // Cleanup: Remove the anchor element from the DOM
   document.body.removeChild(downloadLink);
 }
